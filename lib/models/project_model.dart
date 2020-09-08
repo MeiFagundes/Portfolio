@@ -12,7 +12,7 @@ class ProjectModel {
       title: 'PolarisAI',
       description:
           'Biblioteca/RESTful API de processamento de requisições e Assistente Pessoal, foi construida usando as funções cognitivas do projeto Starlight. Um cliente Web está disponível para que qualquer um possa testar a API.',
-      imagePath: 'assets/images/PolarisAI.jpg',
+      imagePath: 'assets/images/PolarisAI.png',
       launchURI: 'https://meifagundes.com/PolarisAI-Web/',
       sourceCodeURI: 'https://github.com/MeiFagundes/PolarisAI',
     ),
