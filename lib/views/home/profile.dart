@@ -28,7 +28,7 @@ class Profile extends StatelessWidget {
           flex: 10,
           child: Center(
             child: Text(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+              'Formada no CEFET-MG e atualmente estagiando na DTI Digital. Gosto de fazer uns projetos bem aleatórios para testar várias tecnologias legais. Caso te interesse, me segue lá no GitHub ou me mande uma estrelinha através de um dos projetos ao lado.',
               style: TextStyles.profileDescription,
               textAlign: TextAlign.center,
             ),

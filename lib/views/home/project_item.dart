@@ -45,16 +45,27 @@ class ProjectItem extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Flexible(
-                            flex: 15,
-                            child: IconButton(
-                              tooltip: 'Download',
-                              onPressed: () =>
-                                  UrlUtil.openURI(project.downloadURI),
-                              icon: Icon(Icons.download_rounded),
-                              splashRadius: 30,
-                            ),
-                          ),
+                          project.downloadURI != null
+                              ? Flexible(
+                                  flex: 15,
+                                  child: IconButton(
+                                    tooltip: 'Download',
+                                    onPressed: () =>
+                                        UrlUtil.openURI(project.downloadURI),
+                                    icon: Icon(Icons.download_rounded),
+                                    splashRadius: 30,
+                                  ),
+                                )
+                              : Flexible(
+                                  flex: 15,
+                                  child: IconButton(
+                                    tooltip: 'Abrir',
+                                    onPressed: () =>
+                                        UrlUtil.openURI(project.launchURI),
+                                    icon: Icon(Icons.launch),
+                                    splashRadius: 30,
+                                  ),
+                                ),
                           Spacer(flex: 1),
                           Flexible(
                             flex: 15,

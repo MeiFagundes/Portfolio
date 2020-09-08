@@ -11,9 +11,12 @@ class ProjectListView extends StatelessWidget {
         padding: const EdgeInsets.all(30),
         child: Column(
           children: [
-            Text(
-              'Projetos pessoais',
-              style: TextStyles.title,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Text(
+                'Projetos pessoais',
+                style: TextStyles.title,
+              ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,

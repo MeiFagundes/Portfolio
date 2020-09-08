@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class TextStyles {
   static final TextStyle title = TextStyle(
-    fontSize: 28,
+    fontSize: 29,
     fontWeight: FontWeight.w400,
-    color: Colors.black87,
+    color: Colors.pink,
   );
 
   static final TextStyle profileDescription = TextStyle(
@@ -15,6 +15,7 @@ class TextStyles {
   static final TextStyle projectTitle = TextStyle(
     fontSize: 25,
     fontWeight: FontWeight.w400,
+    color: Colors.black87,
   );
 
   static final TextStyle projectDescription = TextStyle(
