@@ -13,9 +13,9 @@ class ProjectItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Container(
-        constraints: BoxConstraints(maxWidth: 850, maxHeight: 260),
+        constraints: BoxConstraints(maxWidth: 850, maxHeight: 265),
         child: Card(
-          elevation: 2,
+          elevation: 3,
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Row(

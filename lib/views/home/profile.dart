@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:meifagundesdotcom/utils/url_util.dart';
 import 'package:meifagundesdotcom/views/shared/custom_icons.dart';
@@ -11,7 +13,13 @@ class Profile extends StatelessWidget {
       children: [
         CircleAvatar(
           backgroundImage: AssetImage('assets/images/mei.jpg'),
-          maxRadius: 70,
+          backgroundColor: Colors.transparent,
+          maxRadius: 85,
+        ),
+        Spacer(),
+        Text(
+          'Mei Fagundes',
+          style: TextStyles.profileName,
         ),
         Spacer(),
         Row(
@@ -50,20 +58,20 @@ class Profile extends StatelessWidget {
           children: [
             FlatButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlEmail),
-              icon: Icon(Icons.email),
-              label: Text('E-mail'),
+              icon: Icon(Icons.email, color: Colors.pinkAccent),
+              label: Text('E-mail', style: TextStyles.profileButton),
               padding: EdgeInsets.all(13),
             ),
             FlatButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlGithub),
-              icon: Icon(CustomIcons.github),
-              label: Text('GitHub'),
+              icon: Icon(CustomIcons.github, color: Colors.pinkAccent),
+              label: Text('GitHub', style: TextStyles.profileButton),
               padding: EdgeInsets.all(13),
             ),
             FlatButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlLinkedin),
-              icon: Icon(CustomIcons.linkedin),
-              label: Text('LinkedIn'),
+              icon: Icon(CustomIcons.linkedin, color: Colors.pinkAccent),
+              label: Text('LinkedIn', style: TextStyles.profileButton),
               padding: EdgeInsets.all(13),
             ),
           ],

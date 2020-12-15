@@ -8,21 +8,22 @@ class ProjectListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(30),
+        padding: const EdgeInsets.symmetric(vertical: 30),
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: Text(
-                'Projetos pessoais',
+                'Projetos Pessoais',
                 style: TextStyles.title,
               ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: ProjectModel.projects
-                  .map((project) => ProjectItem(project))
-                  .toList(),
+              children: [
+                for (final project in ProjectModel.projects)
+                  ProjectItem(project),
+              ],
             ),
           ],
         ),
