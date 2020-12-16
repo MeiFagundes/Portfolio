@@ -42,41 +42,20 @@ class ProjectItem extends StatelessWidget {
                           softWrap: true,
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      Wrap(
+                        spacing: 20,
+                        runAlignment: WrapAlignment.start,
                         children: <Widget>[
-                          project.downloadURI != null
-                              ? Flexible(
-                                  flex: 15,
-                                  child: IconButton(
-                                    tooltip: 'Download',
-                                    onPressed: () =>
-                                        UrlUtil.openURI(project.downloadURI),
-                                    icon: Icon(Icons.download_rounded),
-                                    splashRadius: 30,
-                                  ),
-                                )
-                              : Flexible(
-                                  flex: 15,
-                                  child: IconButton(
-                                    tooltip: 'Abrir',
-                                    onPressed: () =>
-                                        UrlUtil.openURI(project.launchURI),
-                                    icon: Icon(Icons.launch),
-                                    splashRadius: 30,
-                                  ),
-                                ),
-                          Spacer(flex: 1),
-                          Flexible(
-                            flex: 15,
-                            child: IconButton(
-                              tooltip: 'Código fonte',
-                              onPressed: () =>
-                                  UrlUtil.openURI(project.sourceCodeURI),
-                              icon: Icon(Icons.code),
-                              splashRadius: 30,
+                          for (final link in project.links)
+                            Flexible(
+                              flex: 15,
+                              child: IconButton(
+                                tooltip: link.description,
+                                onPressed: () => UrlUtil.openURI(link.uri),
+                                icon: Icon(link.icon),
+                                splashRadius: 30,
+                              ),
                             ),
-                          ),
                         ],
                       ),
                     ],

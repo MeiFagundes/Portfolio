@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:meifagundesdotcom/utils/url_util.dart';
 import 'package:meifagundesdotcom/views/shared/custom_icons.dart';

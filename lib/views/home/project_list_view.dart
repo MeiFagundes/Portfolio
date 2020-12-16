@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meifagundesdotcom/models/project_model.dart';
+import 'package:meifagundesdotcom/repositories/projects_repository.dart';
 import 'package:meifagundesdotcom/views/home/project_item.dart';
 import 'package:meifagundesdotcom/views/shared/text_styles.dart';
 
@@ -21,7 +21,7 @@ class ProjectListView extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                for (final project in ProjectModel.projects)
+                for (final project in ProjectsRepository.getProjects())
                   ProjectItem(project),
               ],
             ),
