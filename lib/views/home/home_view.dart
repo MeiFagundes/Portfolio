@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:meifagundesdotcom/views/home/profile.dart';
-import 'package:meifagundesdotcom/views/home/project_list_view.dart';
+import 'package:meifagundesdotcom/utils/url_util.dart';
+import 'package:meifagundesdotcom/views/home/profile/profile.dart';
+import 'package:meifagundesdotcom/views/home/project_list/project_list_view.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -16,11 +17,22 @@ class Home extends StatelessWidget {
               child: Column(
                 children: [
                   Spacer(),
-                  Flexible(
+                  Expanded(
                     flex: 7,
                     child: Profile(),
                   ),
                   Spacer(),
+                  FlatButton(
+                    onPressed: () => UrlUtil.openURI(UrlUtil.urlMetaProject),
+                    child: Text('Site desenvolvido em Flutter Web',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey,
+                          letterSpacing: 0.7,
+                        )),
+                    padding: EdgeInsets.all(13),
+                  ),
                 ],
               ),
             ),

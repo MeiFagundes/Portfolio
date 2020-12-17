@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meifagundesdotcom/repositories/projects_repository.dart';
-import 'package:meifagundesdotcom/views/home/project_item.dart';
+import 'package:meifagundesdotcom/views/home/project_list/project_card.dart';
 import 'package:meifagundesdotcom/views/shared/text_styles.dart';
 
 class ProjectListView extends StatelessWidget {
@@ -22,7 +22,7 @@ class ProjectListView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 for (final project in ProjectsRepository.getProjects())
-                  ProjectItem(project),
+                  ProjectCard(project),
               ],
             ),
           ],

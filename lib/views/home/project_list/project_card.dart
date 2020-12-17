@@ -3,10 +3,10 @@ import 'package:meifagundesdotcom/models/project_model.dart';
 import 'package:meifagundesdotcom/utils/url_util.dart';
 import 'package:meifagundesdotcom/views/shared/text_styles.dart';
 
-class ProjectItem extends StatelessWidget {
+class ProjectCard extends StatelessWidget {
   final ProjectModel project;
 
-  ProjectItem(this.project);
+  ProjectCard(this.project);
 
   @override
   Widget build(BuildContext context) {
@@ -43,18 +43,15 @@ class ProjectItem extends StatelessWidget {
                         ),
                       ),
                       Wrap(
-                        spacing: 20,
+                        spacing: 15,
                         runAlignment: WrapAlignment.start,
                         children: <Widget>[
                           for (final link in project.links)
-                            Flexible(
-                              flex: 15,
-                              child: IconButton(
-                                tooltip: link.description,
-                                onPressed: () => UrlUtil.openURI(link.uri),
-                                icon: Icon(link.icon),
-                                splashRadius: 30,
-                              ),
+                            IconButton(
+                              tooltip: link.description,
+                              onPressed: () => UrlUtil.openURI(link.uri),
+                              icon: Icon(link.icon),
+                              splashRadius: 30,
                             ),
                         ],
                       ),
