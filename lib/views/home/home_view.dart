@@ -22,16 +22,21 @@ class Home extends StatelessWidget {
                     child: Profile(),
                   ),
                   Spacer(),
-                  FlatButton(
+                  TextButton(
                     onPressed: () => UrlUtil.openURI(UrlUtil.urlMetaProject),
-                    child: Text('Site desenvolvido em Flutter Web',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey,
-                          letterSpacing: 0.7,
-                        )),
-                    padding: EdgeInsets.all(13),
+                    child: Text(
+                      'Site desenvolvido em Flutter for Web',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey,
+                        letterSpacing: 0.7,
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                          EdgeInsets.all(10)),
+                    ),
                   ),
                 ],
               ),
@@ -39,7 +44,6 @@ class Home extends StatelessWidget {
           ),
           Spacer(),
           Expanded(flex: 10, child: ProjectListView()),
-          Spacer(),
         ],
       ),
     );

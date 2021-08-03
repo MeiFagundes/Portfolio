@@ -34,7 +34,7 @@ class Profile extends StatelessWidget {
           flex: 10,
           child: Center(
             child: Text(
-              'Formada no CEFET-MG e atualmente estagiando na DTI Digital. Gosto de fazer uns projetos bem aleatórios para testar várias tecnologias legais. Caso te interesse, me segue lá no GitHub ou me mande uma estrelinha através de um dos projetos ao lado.',
+              'Formada no CEFET-MG e desenvolvedora líder na DTI Digital. Gosto de fazer uns projetos bem aleatórios para testar várias tecnologias legais. Caso te interesse, me segue lá no GitHub ou me mande uma estrelinha através de um dos projetos ao lado.',
               style: TextStyles.profileDescription,
               textAlign: TextAlign.center,
             ),
@@ -54,23 +54,32 @@ class Profile extends StatelessWidget {
         ButtonBar(
           alignment: MainAxisAlignment.spaceEvenly,
           children: [
-            FlatButton.icon(
+            TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlEmail),
               icon: Icon(Icons.email, color: Colors.pinkAccent),
               label: Text('E-mail', style: TextStyles.profileButton),
-              padding: EdgeInsets.all(13),
+              style: ButtonStyle(
+                padding:
+                    MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(13)),
+              ),
             ),
-            FlatButton.icon(
+            TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlGithub),
               icon: Icon(CustomIcons.github, color: Colors.pinkAccent),
               label: Text('GitHub', style: TextStyles.profileButton),
-              padding: EdgeInsets.all(13),
+              style: ButtonStyle(
+                padding:
+                    MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(13)),
+              ),
             ),
-            FlatButton.icon(
+            TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlLinkedin),
               icon: Icon(CustomIcons.linkedin, color: Colors.pinkAccent),
               label: Text('LinkedIn', style: TextStyles.profileButton),
-              padding: EdgeInsets.all(13),
+              style: ButtonStyle(
+                padding:
+                    MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(13)),
+              ),
             ),
           ],
         ),

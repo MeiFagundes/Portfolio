@@ -8,7 +8,7 @@ class TextStyles {
     letterSpacing: 0.7,
     shadows: [
       Shadow(
-        color: Colors.grey[400],
+        color: Colors.grey[400]!,
         blurRadius: 1.2,
         offset: Offset(0.7, 0.7),
       ),
@@ -22,7 +22,7 @@ class TextStyles {
     letterSpacing: 0.7,
     shadows: [
       Shadow(
-        color: Colors.grey[400],
+        color: Colors.grey[400]!,
         blurRadius: 1.5,
         offset: Offset(0.7, 0.7),
       ),

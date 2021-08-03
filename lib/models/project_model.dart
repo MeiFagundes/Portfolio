@@ -6,7 +6,11 @@ class ProjectModel {
   String imagePath;
   List<ProjectLink> links;
 
-  ProjectModel({this.title, this.description, this.imagePath, this.links});
+  ProjectModel(
+      {required this.title,
+      required this.description,
+      required this.imagePath,
+      required this.links});
 }
 
 class ProjectLink {
@@ -14,5 +18,6 @@ class ProjectLink {
   String description;
   String uri;
 
-  ProjectLink({this.icon, this.description, this.uri});
+  ProjectLink(
+      {required this.icon, required this.description, required this.uri});
 }
