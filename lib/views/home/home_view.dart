@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meifagundesdotcom/utils/application_util.dart';
 import 'package:meifagundesdotcom/utils/url_util.dart';
 import 'package:meifagundesdotcom/views/home/profile/profile.dart';
 import 'package:meifagundesdotcom/views/home/project_list/project_list_view.dart';
@@ -6,8 +7,11 @@ import 'package:meifagundesdotcom/views/home/project_list/project_list_view.dart
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isMobileDevice = ApplicationUtil.isMobileDevice(context);
+
     return Scaffold(
-      body: Row(
+      body: Flex(
+        direction: isMobileDevice ? Axis.vertical : Axis.horizontal,
         children: [
           Spacer(),
           Flexible(
