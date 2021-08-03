@@ -54,23 +54,32 @@ class Profile extends StatelessWidget {
         ButtonBar(
           alignment: MainAxisAlignment.spaceEvenly,
           children: [
-            FlatButton.icon(
+            TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlEmail),
               icon: Icon(Icons.email, color: Colors.pinkAccent),
               label: Text('E-mail', style: TextStyles.profileButton),
-              padding: EdgeInsets.all(13),
+              style: ButtonStyle(
+                padding:
+                    MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(13)),
+              ),
             ),
-            FlatButton.icon(
+            TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlGithub),
               icon: Icon(CustomIcons.github, color: Colors.pinkAccent),
               label: Text('GitHub', style: TextStyles.profileButton),
-              padding: EdgeInsets.all(13),
+              style: ButtonStyle(
+                padding:
+                    MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(13)),
+              ),
             ),
-            FlatButton.icon(
+            TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlLinkedin),
               icon: Icon(CustomIcons.linkedin, color: Colors.pinkAccent),
               label: Text('LinkedIn', style: TextStyles.profileButton),
-              padding: EdgeInsets.all(13),
+              style: ButtonStyle(
+                padding:
+                    MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(13)),
+              ),
             ),
           ],
         ),
