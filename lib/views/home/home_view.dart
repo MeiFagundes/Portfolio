@@ -25,7 +25,7 @@ class Home extends StatelessWidget {
                   TextButton(
                     onPressed: () => UrlUtil.openURI(UrlUtil.urlMetaProject),
                     child: Text(
-                      'Site desenvolvido em Flutter Web',
+                      'Site desenvolvido em Flutter for Web',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
