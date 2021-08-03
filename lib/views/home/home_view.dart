@@ -44,7 +44,6 @@ class Home extends StatelessWidget {
           ),
           Spacer(),
           Expanded(flex: 10, child: ProjectListView()),
-          Spacer(),
         ],
       ),
     );
