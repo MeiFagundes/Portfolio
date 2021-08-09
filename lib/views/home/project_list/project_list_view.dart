@@ -17,9 +17,7 @@ class ProjectListView extends StatelessWidget {
   }
 
   Widget buildDesktopLayout(BuildContext context) {
-    return SingleChildScrollView(
-      child: buildBaseLayout(context),
-    );
+    return buildBaseLayout(context);
   }
 
   Widget buildBaseLayout(BuildContext context) {

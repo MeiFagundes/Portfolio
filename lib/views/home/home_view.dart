@@ -3,6 +3,7 @@ import 'package:meifagundesdotcom/utils/application_util.dart';
 import 'package:meifagundesdotcom/utils/url_util.dart';
 import 'package:meifagundesdotcom/views/home/profile/profile.dart';
 import 'package:meifagundesdotcom/views/home/project_list/project_list_view.dart';
+import 'package:meifagundesdotcom/views/shared/padding_sizes.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -17,62 +18,82 @@ class Home extends StatelessWidget {
 
   Widget buildMobileLayout(BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 550,
-              child: Profile(),
+      child: Center(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 800),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Center(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 550,
+                    child: Profile(),
+                  ),
+                  Divider(),
+                  ProjectListView(),
+                  buildSourceButton(context),
+                ],
+              ),
             ),
-            Divider(),
-            ProjectListView(),
-            buildSourceButton(context),
-          ],
+          ),
         ),
       ),
     );
   }
 
   Widget buildDesktopLayout(BuildContext context) {
-    return Row(
-      children: [
-        Spacer(),
-        Flexible(
-          flex: 5,
-          child: SizedBox(
-            height: 750,
-            child: Column(
-              children: [
-                Spacer(),
-                Expanded(
-                  flex: 7,
-                  child: Profile(),
-                ),
-                Spacer(),
-                TextButton(
-                  onPressed: () => UrlUtil.openURI(UrlUtil.urlMetaProject),
-                  child: Text(
-                    'Site desenvolvido em Flutter for Web',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.grey,
-                      letterSpacing: 0.7,
+    return Center(
+      child: Container(
+        constraints: BoxConstraints(maxWidth: 1500),
+        child: Row(
+          children: [
+            SizedBox(width: PaddingSizes.homePadding),
+            Expanded(
+              flex: 5,
+              child: SizedBox(
+                height: 750,
+                child: Column(
+                  children: [
+                    Spacer(),
+                    Expanded(
+                      flex: 7,
+                      child: Profile(),
                     ),
-                  ),
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all<EdgeInsets>(
-                        EdgeInsets.all(10)),
-                  ),
+                    Spacer(),
+                    TextButton(
+                      onPressed: () => UrlUtil.openURI(UrlUtil.urlMetaProject),
+                      child: Text(
+                        'Site desenvolvido em Flutter for Web',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey,
+                          letterSpacing: 0.7,
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                            EdgeInsets.all(10)),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+            SizedBox(width: PaddingSizes.homePadding),
+            Expanded(
+              flex: 10,
+              child: Scrollbar(
+                isAlwaysShown: true,
+                child: SingleChildScrollView(
+                  child: ProjectListView(),
+                ),
+              ),
+            ),
+          ],
         ),
-        Spacer(),
-        Flexible(flex: 10, fit: FlexFit.loose, child: ProjectListView()),
-      ],
+      ),
     );
   }
 
