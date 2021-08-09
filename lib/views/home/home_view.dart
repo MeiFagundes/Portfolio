@@ -61,22 +61,7 @@ class Home extends StatelessWidget {
                       child: Profile(),
                     ),
                     Spacer(),
-                    TextButton(
-                      onPressed: () => UrlUtil.openURI(UrlUtil.urlMetaProject),
-                      child: Text(
-                        'Site desenvolvido em Flutter for Web',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey,
-                          letterSpacing: 0.7,
-                        ),
-                      ),
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsets>(
-                            EdgeInsets.all(10)),
-                      ),
-                    ),
+                    buildSourceButton(context),
                   ],
                 ),
               ),
@@ -101,7 +86,7 @@ class Home extends StatelessWidget {
     return TextButton(
       onPressed: () => UrlUtil.openURI(UrlUtil.urlMetaProject),
       child: Text(
-        'Site desenvolvido em Flutter for Web',
+        'Built with Flutter for Web',
         style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
