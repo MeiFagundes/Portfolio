@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meifagundesdotcom/models/project_model.dart';
+import 'package:meifagundesdotcom/utils/application_util.dart';
 import 'package:meifagundesdotcom/utils/url_util.dart';
 import 'package:meifagundesdotcom/views/shared/text_styles.dart';
 
@@ -10,20 +11,26 @@ class ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobileDevice = ApplicationUtil.isMobileDevice(context);
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Container(
-        constraints: BoxConstraints(maxWidth: 850, maxHeight: 265),
+        constraints: BoxConstraints(
+            maxWidth: 850, maxHeight: isMobileDevice ? 580 : 265),
         child: Card(
           elevation: 3,
           child: Padding(
             padding: const EdgeInsets.all(20),
-            child: Row(
+            child: Flex(
+              direction: isMobileDevice ? Axis.vertical : Axis.horizontal,
               children: [
                 Expanded(
                   flex: 55,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: isMobileDevice
+                        ? MainAxisAlignment.spaceAround
+                        : MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
@@ -34,14 +41,21 @@ class ProjectCard extends StatelessWidget {
                           softWrap: true,
                         ),
                       ),
-                      Expanded(
-                        child: Text(
-                          project.description,
-                          style: TextStyles.projectDescription,
-                          textAlign: TextAlign.left,
-                          softWrap: true,
-                        ),
-                      ),
+                      isMobileDevice
+                          ? Text(
+                              project.description,
+                              style: TextStyles.projectDescription,
+                              textAlign: TextAlign.left,
+                              softWrap: true,
+                            )
+                          : Expanded(
+                              child: Text(
+                                project.description,
+                                style: TextStyles.projectDescription,
+                                textAlign: TextAlign.left,
+                                softWrap: true,
+                              ),
+                            ),
                       Wrap(
                         spacing: 15,
                         runAlignment: WrapAlignment.start,
@@ -58,9 +72,9 @@ class ProjectCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Spacer(flex: 3),
+                Spacer(flex: isMobileDevice ? 1 : 3),
                 Expanded(
-                  flex: 45,
+                  flex: isMobileDevice ? 55 : 45,
                   child: Image.asset(project.imagePath),
                 ),
               ],
