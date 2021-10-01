@@ -75,7 +75,7 @@ class ProjectCard extends StatelessWidget {
                 Spacer(flex: isMobileDevice ? 1 : 3),
                 Expanded(
                   flex: isMobileDevice ? 55 : 45,
-                  child: Image.asset(project.imagePath),
+                  child: Image.network(project.imagePath),
                 ),
               ],
             ),
