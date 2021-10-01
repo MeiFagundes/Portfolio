@@ -16,8 +16,12 @@ class _ProjectListViewState extends State<ProjectListView> {
 
   @override
   void initState() {
-    firestoreFuture =
-        firestore.collection('portfolio projects').snapshots().first;
+    firestoreFuture = firestore
+        .collection('portfolio')
+        .doc('projects')
+        .collection('project list')
+        .snapshots()
+        .first;
     super.initState();
   }
 
