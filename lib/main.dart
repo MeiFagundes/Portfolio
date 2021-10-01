@@ -1,7 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:meifagundesdotcom/views/home/home_view.dart';
 
-void main() {
+Future<void> main() async {
+  await Firebase.initializeApp().catchError((e) {
+    print(e);
+  });
   runApp(MyApp());
 }
 
