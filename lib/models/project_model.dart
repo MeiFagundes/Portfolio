@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:meifagundesdotcom/views/shared/custom_icons.dart';
 
 class ProjectModel {
   String title;
@@ -36,23 +37,28 @@ class ProjectLink {
   IconData icon;
   String description;
   String uri;
+  bool hightlighted;
 
   ProjectLink(
-      {required this.icon, required this.description, required this.uri});
+      {required this.icon,
+      required this.description,
+      required this.uri,
+      this.hightlighted = false});
 
   ProjectLink.fromType({required String type, required String uri})
       : this.icon = _getIconByType(type),
         this.description = _getDescriptionByType(type),
-        this.uri = uri;
+        this.uri = uri,
+        this.hightlighted = type == 'launch' ? true : false;
 
   static String _getDescriptionByType(String type) {
     switch (type) {
       case 'launch':
         return "Acessar";
       case 'download':
-        return "Download";
+        return "Baixar";
       case 'source':
-        return "Código Fonte";
+        return "Ver no GitHub";
       default:
         return "";
     }
@@ -61,11 +67,11 @@ class ProjectLink {
   static IconData _getIconByType(String type) {
     switch (type) {
       case 'launch':
-        return Icons.launch;
+        return Icons.launch_rounded;
       case 'download':
         return Icons.download;
       case 'source':
-        return Icons.code;
+        return CustomIcons.github;
       default:
         return Icons.circle;
     }

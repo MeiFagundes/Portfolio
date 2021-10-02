@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:meifagundesdotcom/models/project_model.dart';
 import 'package:meifagundesdotcom/views/home/project_list/project_card.dart';
 import 'package:meifagundesdotcom/views/shared/text_styles.dart';
-import 'package:meifagundesdotcom/utils/application_util.dart';
 
 class ProjectListView extends StatefulWidget {
   @override
@@ -28,20 +27,6 @@ class _ProjectListViewState extends State<ProjectListView> {
 
   @override
   Widget build(BuildContext context) {
-    return ApplicationUtil.isMobileDevice(context)
-        ? buildMobileLayout(context)
-        : buildDesktopLayout(context);
-  }
-
-  Widget buildMobileLayout(BuildContext context) {
-    return buildBaseLayout(context);
-  }
-
-  Widget buildDesktopLayout(BuildContext context) {
-    return buildBaseLayout(context);
-  }
-
-  Widget buildBaseLayout(BuildContext context) {
     return FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
         future: firestoreFuture,
         builder: (context, snapshot) {

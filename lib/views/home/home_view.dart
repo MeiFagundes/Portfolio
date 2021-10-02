@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meifagundesdotcom/utils/application_util.dart';
 import 'package:meifagundesdotcom/utils/url_util.dart';
 import 'package:meifagundesdotcom/views/home/profile/profile.dart';
 import 'package:meifagundesdotcom/views/home/project_list/project_list_view.dart';
@@ -8,15 +7,14 @@ import 'package:meifagundesdotcom/views/shared/padding_sizes.dart';
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-      child: ApplicationUtil.isMobileDevice(context)
-          ? buildMobileLayout(context)
-          : buildDesktopLayout(context),
+    return Scaffold(body: SafeArea(
+      child: LayoutBuilder(builder: (context, constraints) {
+        return constraints.maxWidth >= 1160 ? desktopLayout : mobileLayout;
+      }),
     ));
   }
 
-  Widget buildMobileLayout(BuildContext context) {
+  Widget get mobileLayout {
     return SingleChildScrollView(
       child: Center(
         child: Container(
@@ -29,7 +27,7 @@ class Home extends StatelessWidget {
                   Profile(),
                   Divider(),
                   ProjectListView(),
-                  buildSourceButton(context),
+                  sourceButton,
                 ],
               ),
             ),
@@ -39,7 +37,7 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget buildDesktopLayout(BuildContext context) {
+  Widget get desktopLayout {
     return Center(
       child: Container(
         constraints: BoxConstraints(maxWidth: 1500),
@@ -49,8 +47,14 @@ class Home extends StatelessWidget {
             Expanded(
               flex: 5,
               child: Container(
-                constraints: BoxConstraints(maxHeight: 550),
-                child: Profile(),
+                constraints: BoxConstraints(maxHeight: 600),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Profile(),
+                    sourceButton,
+                  ],
+                ),
               ),
             ),
             SizedBox(width: PaddingSizes.homePadding),
@@ -69,20 +73,29 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget buildSourceButton(BuildContext context) {
-    return TextButton(
-      onPressed: () => UrlUtil.openURI(UrlUtil.urlMetaProject),
-      child: Text(
-        'Built with Flutter for Web',
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          color: Colors.grey,
-          letterSpacing: 0.7,
+  Widget get sourceButton {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: TextButton(
+        onPressed: () => UrlUtil.openURI(UrlUtil.urlMetaProject),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Built with ',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey,
+                letterSpacing: 0.7,
+              ),
+            ),
+            FlutterLogo(size: 58, style: FlutterLogoStyle.horizontal),
+          ],
         ),
-      ),
-      style: ButtonStyle(
-        padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(10)),
+        style: ButtonStyle(
+          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(10)),
+        ),
       ),
     );
   }

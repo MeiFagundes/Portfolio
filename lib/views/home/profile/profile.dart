@@ -8,19 +8,16 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     final spacer = SizedBox(height: 10);
 
-    final buttonStyle = ButtonStyle(
-      padding: MaterialStateProperty.all<EdgeInsets>(
-          const EdgeInsets.symmetric(horizontal: 8, vertical: 15)),
-    );
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         CircleAvatar(
-          backgroundImage: AssetImage('assets/images/mei.jpg'),
+          backgroundImage: AssetImage(
+            'assets/images/mei.jpg',
+          ),
           backgroundColor: Colors.transparent,
-          maxRadius: 85,
+          maxRadius: 80,
         ),
         spacer,
         Text(
@@ -63,21 +60,18 @@ class Profile extends StatelessWidget {
           children: [
             TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlEmail),
-              icon: Icon(Icons.email, color: Colors.pinkAccent),
-              label: Text('E-mail', style: TextStyles.profileButton),
-              style: buttonStyle,
+              icon: Icon(Icons.email),
+              label: Text('E-mail'),
             ),
             TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlGithub),
-              icon: Icon(CustomIcons.github, color: Colors.pinkAccent),
-              label: Text('GitHub', style: TextStyles.profileButton),
-              style: buttonStyle,
+              icon: Icon(CustomIcons.github),
+              label: Text('GitHub'),
             ),
             TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlLinkedin),
-              icon: Icon(CustomIcons.linkedin, color: Colors.pinkAccent),
-              label: Text('LinkedIn', style: TextStyles.profileButton),
-              style: buttonStyle,
+              icon: Icon(CustomIcons.linkedin),
+              label: Text('LinkedIn'),
             ),
           ],
         ),
