@@ -61,7 +61,7 @@ class ProjectLink {
   static IconData _getIconByType(String type) {
     switch (type) {
       case 'launch':
-        return Icons.download_rounded;
+        return Icons.launch;
       case 'download':
         return Icons.download;
       case 'source':

@@ -20,6 +20,7 @@ class _ProjectListViewState extends State<ProjectListView> {
         .collection('portfolio')
         .doc('projects')
         .collection('project list')
+        .orderBy('priority')
         .snapshots()
         .first;
     super.initState();
