@@ -51,7 +51,7 @@ class TextStyles {
   );
 
   static final TextStyle profileButton = TextStyle(
-    fontSize: 14.5,
+    fontSize: 14,
     fontWeight: FontWeight.w600,
     color: Colors.pinkAccent,
   );

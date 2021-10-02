@@ -26,10 +26,7 @@ class Home extends StatelessWidget {
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 550,
-                    child: Profile(),
-                  ),
+                  Profile(),
                   Divider(),
                   ProjectListView(),
                   buildSourceButton(context),
@@ -51,19 +48,9 @@ class Home extends StatelessWidget {
             SizedBox(width: PaddingSizes.homePadding),
             Expanded(
               flex: 5,
-              child: SizedBox(
-                height: 750,
-                child: Column(
-                  children: [
-                    Spacer(),
-                    Expanded(
-                      flex: 7,
-                      child: Profile(),
-                    ),
-                    Spacer(),
-                    buildSourceButton(context),
-                  ],
-                ),
+              child: Container(
+                constraints: BoxConstraints(maxHeight: 550),
+                child: Profile(),
               ),
             ),
             SizedBox(width: PaddingSizes.homePadding),
