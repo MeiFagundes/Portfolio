@@ -1,7 +1,7 @@
 name: meifagundesdotcom
 description: Formada no CEFET-MG e desenvolvedora líder na DTI Digital - Projetos pessoais
 publish_to: "none" # Remove this line if you wish to
-version: 1.3.0+1
+version: 1.4.0+1
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -10,6 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   url_launcher: ^6.0.9
+  firebase_core: "^1.6.0"
+  cloud_firestore: "^2.5.3"
 
 dev_dependencies:
   flutter_test:

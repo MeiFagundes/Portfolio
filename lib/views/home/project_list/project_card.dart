@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:meifagundesdotcom/models/project_model.dart';
-import 'package:meifagundesdotcom/utils/application_util.dart';
 import 'package:meifagundesdotcom/utils/url_util.dart';
-import 'package:meifagundesdotcom/views/shared/text_styles.dart';
+import 'package:meifagundesdotcom/views/shared/shared.dart';
 
 class ProjectCard extends StatelessWidget {
   final ProjectModel project;
@@ -11,77 +11,113 @@ class ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobileDevice = ApplicationUtil.isMobileDevice(context);
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
-      child: Container(
-        constraints: BoxConstraints(
-            maxWidth: 850, maxHeight: isMobileDevice ? 580 : 265),
-        child: Card(
-          elevation: 3,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Flex(
-              direction: isMobileDevice ? Axis.vertical : Axis.horizontal,
-              children: [
-                Expanded(
-                  flex: 55,
-                  child: Column(
-                    mainAxisAlignment: isMobileDevice
-                        ? MainAxisAlignment.spaceAround
-                        : MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        child: Text(
-                          project.title,
-                          style: TextStyles.projectTitle,
-                          softWrap: true,
-                        ),
-                      ),
-                      isMobileDevice
-                          ? Text(
-                              project.description,
-                              style: TextStyles.projectDescription,
-                              textAlign: TextAlign.left,
-                              softWrap: true,
-                            )
-                          : Expanded(
-                              child: Text(
-                                project.description,
-                                style: TextStyles.projectDescription,
-                                textAlign: TextAlign.left,
-                                softWrap: true,
-                              ),
-                            ),
-                      Wrap(
-                        spacing: 15,
-                        runAlignment: WrapAlignment.start,
-                        children: <Widget>[
-                          for (final link in project.links)
-                            IconButton(
-                              tooltip: link.description,
-                              onPressed: () => UrlUtil.openURI(link.uri),
-                              icon: Icon(link.icon),
-                              splashRadius: 30,
-                            ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Spacer(flex: isMobileDevice ? 1 : 3),
-                Expanded(
-                  flex: isMobileDevice ? 55 : 45,
-                  child: Image.asset(project.imagePath),
-                ),
-              ],
-            ),
+      child: Card(
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(BorderRadiusSizes.level1),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              print(constraints.maxWidth);
+              if (constraints.maxWidth >= 665)
+                return desktopLayout;
+              else
+                return mobileLayout;
+            },
           ),
         ),
       ),
     );
   }
+
+  Widget get mobileLayout {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        title,
+        description,
+        SizedBox(height: 15),
+        image,
+        SizedBox(height: 15),
+        links,
+      ],
+    );
+  }
+
+  Widget get desktopLayout {
+    return Stack(
+      alignment: Alignment.bottomLeft,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                title,
+                Container(
+                  constraints: BoxConstraints(maxWidth: 350),
+                  child: description,
+                ),
+                SizedBox(height: 55),
+              ],
+            ),
+            SizedBox(width: 15),
+            Container(
+              constraints: BoxConstraints(maxWidth: 300),
+              child: image,
+            )
+          ],
+        ),
+        links,
+      ],
+    );
+  }
+
+  Widget get title => Padding(
+        padding: const EdgeInsets.only(bottom: 5),
+        child: Text(
+          project.title,
+          style: TextStyles.projectTitle,
+          softWrap: true,
+        ),
+      );
+
+  Widget get description => Text(
+        project.description,
+        style: TextStyles.projectDescription,
+        textAlign: TextAlign.left,
+        softWrap: true,
+      );
+
+  Widget get links => Wrap(
+        spacing: 5,
+        runAlignment: WrapAlignment.start,
+        children: <Widget>[
+          for (final link in project.links)
+            link.hightlighted
+                ? ElevatedButton.icon(
+                    label: Text(link.description),
+                    icon: Icon(link.icon),
+                    onPressed: () => UrlUtil.openURI(link.uri),
+                  )
+                : TextButton.icon(
+                    label: Text(link.description),
+                    icon: Icon(link.icon),
+                    onPressed: () => UrlUtil.openURI(link.uri),
+                  ),
+        ],
+      );
+
+  Widget get image => Center(
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(BorderRadiusSizes.level2),
+          child: Image.network(project.imagePath)));
 }
