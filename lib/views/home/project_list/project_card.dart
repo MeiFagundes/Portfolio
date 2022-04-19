@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:meifagundesdotcom/models/project_model.dart';
 import 'package:meifagundesdotcom/utils/url_util.dart';
 import 'package:meifagundesdotcom/views/shared/shared.dart';
