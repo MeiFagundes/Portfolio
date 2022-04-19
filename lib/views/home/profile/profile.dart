@@ -38,7 +38,7 @@ class Profile extends StatelessWidget {
         spacer,
         Center(
           child: Text(
-            'Formada no CEFET-MG e desenvolvedora líder na DTI Digital. Gosto de fazer uns projetinhos bem aleatórios para testar várias tecnologias legais. Caso te interesse, me segue lá no GitHub ou me mande uma estrelinha através de um dos projetos listados.',
+            'Formada no CEFET-MG e Consultora de Software na Thoughtworks. Gosto de fazer uns projetinhos bem aleatórios para testar várias tecnologias legais. Caso te interesse, me segue lá no GitHub ou me mande uma estrelinha através de um dos projetos listados.',
             style: TextStyles.profileDescription,
             textAlign: TextAlign.center,
           ),
