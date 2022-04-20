@@ -5,7 +5,7 @@ class UrlUtil {
   static final String urlGithub = 'https://github.com/MeiFagundes';
   static final String urlLinkedin = 'https://www.linkedin.com/in/meifagundes';
   static final String urlMetaProject =
-      'https://github.com/MeiFagundes/MeiFagundes.com';
+      'https://github.com/MeiFagundes/Portfolio';
 
   static Future<void> openURI(String uri, {bool encode = true}) async {
     var encodedUrl = encode ? Uri.encodeFull(uri) : uri;
