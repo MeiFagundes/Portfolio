@@ -26,6 +26,12 @@ class _ProjectListViewState extends State<ProjectListView> {
   }
 
   @override
+  void dispose() {
+    firestore.terminate();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
         future: firestoreFuture,

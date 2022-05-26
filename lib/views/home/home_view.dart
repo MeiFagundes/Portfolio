@@ -61,7 +61,7 @@ class Home extends StatelessWidget {
             Expanded(
               flex: 10,
               child: Scrollbar(
-                isAlwaysShown: true,
+                thumbVisibility: true,
                 child: SingleChildScrollView(
                   child: ProjectListView(),
                 ),

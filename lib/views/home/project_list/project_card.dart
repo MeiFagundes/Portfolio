@@ -21,7 +21,6 @@ class ProjectCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: LayoutBuilder(
             builder: (context, constraints) {
-              print(constraints.maxWidth);
               if (constraints.maxWidth >= 665)
                 return desktopLayout;
               else
