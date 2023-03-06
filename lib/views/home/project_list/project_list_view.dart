@@ -5,6 +5,8 @@ import 'package:meifagundesdotcom/views/home/project_list/project_card.dart';
 import 'package:meifagundesdotcom/views/shared/text_styles.dart';
 
 class ProjectListView extends StatefulWidget {
+  const ProjectListView({Key? key}) : super(key: key);
+
   @override
   State<ProjectListView> createState() => _ProjectListViewState();
 }

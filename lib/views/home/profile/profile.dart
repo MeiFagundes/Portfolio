@@ -4,6 +4,8 @@ import 'package:meifagundesdotcom/views/shared/custom_icons.dart';
 import 'package:meifagundesdotcom/views/shared/text_styles.dart';
 
 class Profile extends StatelessWidget {
+  const Profile({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final spacer = SizedBox(height: 10);
@@ -17,7 +19,7 @@ class Profile extends StatelessWidget {
             'assets/images/mei.jpg',
           ),
           backgroundColor: Colors.transparent,
-          maxRadius: 80,
+          maxRadius: 100,
         ),
         spacer,
         Text(
