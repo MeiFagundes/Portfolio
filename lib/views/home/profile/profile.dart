@@ -62,17 +62,26 @@ class Profile extends StatelessWidget {
           children: [
             TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlEmail),
-              icon: Icon(Icons.email),
+              icon: Icon(
+                Icons.email,
+                color: Colors.pinkAccent,
+              ),
               label: Text('E-mail'),
             ),
             TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlGithub),
-              icon: Icon(CustomIcons.github),
+              icon: Icon(
+                CustomIcons.github,
+                color: Colors.pinkAccent,
+              ),
               label: Text('GitHub'),
             ),
             TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlLinkedin),
-              icon: Icon(CustomIcons.linkedin),
+              icon: Icon(
+                CustomIcons.linkedin,
+                color: Colors.pinkAccent,
+              ),
               label: Text('LinkedIn'),
             ),
           ],

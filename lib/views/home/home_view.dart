@@ -94,7 +94,7 @@ class Home extends StatelessWidget {
           ],
         ),
         style: ButtonStyle(
-          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(10)),
+          padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.all(10)),
         ),
       ),
     );
