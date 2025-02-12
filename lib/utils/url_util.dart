@@ -8,12 +8,12 @@ class UrlUtil {
       'https://github.com/MeiFagundes/Portfolio';
 
   static Future<void> openURI(String uri, {bool encode = true}) async {
-    var encodedUrl = encode ? Uri.encodeFull(uri) : uri;
+    var parsedUri = Uri.parse(uri);
 
-    if (await canLaunch(encodedUrl)) {
-      await launch(encodedUrl, forceSafariVC: false);
+    if (await canLaunchUrl(parsedUri)) {
+      await launchUrl(parsedUri);
     } else {
-      throw 'Não foi possível abrir a URI: $encodedUrl';
+      throw 'Não foi possível abrir a URI: ${parsedUri.toString()}';
     }
   }
 }

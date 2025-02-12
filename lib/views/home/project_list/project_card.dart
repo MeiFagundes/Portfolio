@@ -21,7 +21,6 @@ class ProjectCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: LayoutBuilder(
             builder: (context, constraints) {
-              print(constraints.maxWidth);
               if (constraints.maxWidth >= 665)
                 return desktopLayout;
               else
@@ -103,13 +102,22 @@ class ProjectCard extends StatelessWidget {
           for (final link in project.links)
             link.hightlighted
                 ? ElevatedButton.icon(
-                    label: Text(link.description),
-                    icon: Icon(link.icon),
+                    label: Text(
+                      link.description,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    icon: Icon(
+                      link.icon,
+                      color: Colors.white,
+                    ),
                     onPressed: () => UrlUtil.openURI(link.uri),
                   )
                 : TextButton.icon(
                     label: Text(link.description),
-                    icon: Icon(link.icon),
+                    icon: Icon(
+                      link.icon,
+                      color: Colors.pinkAccent,
+                    ),
                     onPressed: () => UrlUtil.openURI(link.uri),
                   ),
         ],

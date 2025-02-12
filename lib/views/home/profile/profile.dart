@@ -4,6 +4,8 @@ import 'package:meifagundesdotcom/views/shared/custom_icons.dart';
 import 'package:meifagundesdotcom/views/shared/text_styles.dart';
 
 class Profile extends StatelessWidget {
+  const Profile({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final spacer = SizedBox(height: 10);
@@ -17,7 +19,7 @@ class Profile extends StatelessWidget {
             'assets/images/mei.jpg',
           ),
           backgroundColor: Colors.transparent,
-          maxRadius: 80,
+          maxRadius: 100,
         ),
         spacer,
         Text(
@@ -60,17 +62,26 @@ class Profile extends StatelessWidget {
           children: [
             TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlEmail),
-              icon: Icon(Icons.email),
+              icon: Icon(
+                Icons.email,
+                color: Colors.pinkAccent,
+              ),
               label: Text('E-mail'),
             ),
             TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlGithub),
-              icon: Icon(CustomIcons.github),
+              icon: Icon(
+                CustomIcons.github,
+                color: Colors.pinkAccent,
+              ),
               label: Text('GitHub'),
             ),
             TextButton.icon(
               onPressed: () => UrlUtil.openURI(UrlUtil.urlLinkedin),
-              icon: Icon(CustomIcons.linkedin),
+              icon: Icon(
+                CustomIcons.linkedin,
+                color: Colors.pinkAccent,
+              ),
               label: Text('LinkedIn'),
             ),
           ],

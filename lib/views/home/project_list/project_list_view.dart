@@ -5,6 +5,8 @@ import 'package:meifagundesdotcom/views/home/project_list/project_card.dart';
 import 'package:meifagundesdotcom/views/shared/text_styles.dart';
 
 class ProjectListView extends StatefulWidget {
+  const ProjectListView({Key? key}) : super(key: key);
+
   @override
   State<ProjectListView> createState() => _ProjectListViewState();
 }
@@ -23,6 +25,12 @@ class _ProjectListViewState extends State<ProjectListView> {
         .snapshots()
         .first;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    firestore.terminate();
+    super.dispose();
   }
 
   @override

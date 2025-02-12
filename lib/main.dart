@@ -2,11 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:meifagundesdotcom/views/home/home_view.dart';
 import 'package:meifagundesdotcom/views/shared/shared.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
-  await Firebase.initializeApp().catchError((e) {
-    print(e);
-  });
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -28,15 +29,14 @@ class MyApp extends StatelessWidget {
         ),
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
-            textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(
+            textStyle: WidgetStateProperty.all<TextStyle>(TextStyle(
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.w600,
             )),
-            foregroundColor:
-                MaterialStateProperty.all<Color>(Colors.pinkAccent),
-            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+            foregroundColor: WidgetStateProperty.all<Color>(Colors.pinkAccent),
+            padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                 EdgeInsets.symmetric(horizontal: 8, vertical: 15)),
-            shape: MaterialStateProperty.all<OutlinedBorder>(
+            shape: WidgetStateProperty.all<OutlinedBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(BorderRadiusSizes.level2),
               ),
@@ -45,15 +45,14 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
-            textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(
+            textStyle: WidgetStateProperty.all<TextStyle>(TextStyle(
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.w600,
             )),
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Colors.pinkAccent),
-            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+            backgroundColor: WidgetStateProperty.all<Color>(Colors.pinkAccent),
+            padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                 EdgeInsets.symmetric(horizontal: 8, vertical: 15)),
-            shape: MaterialStateProperty.all<OutlinedBorder>(
+            shape: WidgetStateProperty.all<OutlinedBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(BorderRadiusSizes.level2),
               ),
