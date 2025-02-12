@@ -31,6 +31,7 @@ class Home extends StatelessWidget {
                   Divider(),
                   projectList,
                   sourceButton,
+                  versionNumber
                 ],
               ),
             ),
@@ -50,12 +51,13 @@ class Home extends StatelessWidget {
             Expanded(
               flex: 5,
               child: Container(
-                constraints: BoxConstraints(maxHeight: 620),
+                constraints: BoxConstraints(maxHeight: 700),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Profile(),
                     sourceButton,
+                    versionNumber,
                   ],
                 ),
               ),
@@ -95,6 +97,21 @@ class Home extends StatelessWidget {
         ),
         style: ButtonStyle(
           padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.all(10)),
+        ),
+      ),
+    );
+  }
+
+  Widget get versionNumber {
+    return Padding(
+      padding: const EdgeInsets.only(top: 0),
+      child: Text(
+        'v1.6.0',
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: Colors.grey,
+          letterSpacing: 0.7,
         ),
       ),
     );
