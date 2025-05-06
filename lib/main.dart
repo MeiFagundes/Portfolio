@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
       title: 'Mei Fagundes',
       theme: ThemeData(
         fontFamily: 'OpenSans',
-        primarySwatch: Colors.pink,
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.pink, brightness: Brightness.light),
         visualDensity: VisualDensity.adaptivePlatformDensity,
         iconTheme: IconThemeData(color: Colors.pinkAccent, size: 25),
         buttonTheme: ButtonThemeData(

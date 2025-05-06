@@ -76,43 +76,31 @@ class Home extends StatelessWidget {
   }
 
   Widget get sourceButton {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15),
-      child: TextButton(
-        onPressed: () => UrlUtil.openURI(UrlUtil.urlMetaProject),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Built with ',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: Colors.grey,
-                letterSpacing: 0.7,
-              ),
-            ),
-            FlutterLogo(size: 58, style: FlutterLogoStyle.horizontal),
-          ],
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'Built with ',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: Colors.grey,
+            letterSpacing: 0.7,
+          ),
         ),
-        style: ButtonStyle(
-          padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.all(10)),
-        ),
-      ),
+        FlutterLogo(size: 58, style: FlutterLogoStyle.horizontal),
+      ],
     );
   }
 
   Widget get versionNumber {
-    return Padding(
-      padding: const EdgeInsets.only(top: 0),
-      child: Text(
-        'v1.6.0',
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          color: Colors.grey,
-          letterSpacing: 0.7,
-        ),
+    return Text(
+      'v1.7.0',
+      style: TextStyle(
+        fontSize: 11,
+        fontWeight: FontWeight.w400,
+        color: Colors.grey,
+        letterSpacing: 0.7,
       ),
     );
   }
