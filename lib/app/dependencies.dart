@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:http/http.dart' as http;
 
 import '../data/repositories/project_repository.dart';
-import '../data/services/firestore_project_service.dart';
+import '../data/services/http_project_service.dart';
 import '../data/services/link_launcher.dart';
-import '../firebase_options.dart';
 
 class AppDependencies {
   const AppDependencies({
@@ -17,12 +15,18 @@ class AppDependencies {
 }
 
 /// The composition root is the only place that resolves plugin singletons.
-Future<AppDependencies> createAppDependencies() async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  return AppDependencies(
-    projectRepository: FirestoreProjectRepository(
-      FirestoreProjectService(firestore: FirebaseFirestore.instance),
+Future<AppDependencies> createAppDependencies() async => AppDependencies(
+  projectRepository: DefaultProjectRepository(
+    HttpProjectService(
+      client: http.Client(),
+      endpoint: Uri.parse(
+        const String.fromEnvironment(
+          'PORTFOLIO_CONTENT_URL',
+          defaultValue:
+              'https://meifagundesdotcom-content.web.app/v1/projects.json',
+        ),
+      ),
     ),
-    linkLauncher: const UrlLauncherService(),
-  );
-}
+  ),
+  linkLauncher: const UrlLauncherService(),
+);

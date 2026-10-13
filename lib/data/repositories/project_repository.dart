@@ -5,17 +5,31 @@ abstract interface class ProjectRepository {
   Future<List<ProjectModel>> loadProjects();
 }
 
-class FirestoreProjectRepository implements ProjectRepository {
+class DefaultProjectRepository implements ProjectRepository {
   final ProjectService _service;
 
-  FirestoreProjectRepository(this._service);
+  DefaultProjectRepository(this._service);
 
   @override
   Future<List<ProjectModel>> loadProjects() async {
     final documents = await _service.loadProjects();
-    final projects = documents
-        .map(_projectFromDocument)
-        .toList(growable: false);
+    final ids = <String>{};
+    for (final document in documents) {
+      final id = _requiredString(document, 'id');
+      if (!ids.add(id)) throw FormatException('Duplicate project id "$id".');
+      final priority = document['priority'];
+      if (priority is! int) {
+        throw FormatException('Project "$id" priority must be an integer.');
+      }
+    }
+    final orderedDocuments = List<Map<String, dynamic>>.of(documents);
+    orderedDocuments.sort((a, b) {
+      final priority = (a['priority'] as int).compareTo(b['priority'] as int);
+      return priority != 0
+          ? priority
+          : (a['id'] as String).compareTo(b['id'] as String);
+    });
+    final projects = orderedDocuments.map(_projectFromDocument).toList();
     return List.unmodifiable(projects);
   }
 
@@ -34,15 +48,33 @@ class FirestoreProjectRepository implements ProjectRepository {
 
       final rawType = _requiredString(rawLink, 'type');
       final uri = _requiredString(rawLink, 'url');
-      links.add(ProjectLink(type: _linkType(rawType), uri: uri));
+      final type = _linkType(rawType);
+      if (type == ProjectLinkType.unknown) {
+        throw FormatException('Unsupported project link type "$rawType".');
+      }
+      _requiredUri(uri, 'link URL');
+      links.add(ProjectLink(type: type, uri: uri));
     }
+
+    final imageUrl = _requiredString(document, 'imageUrl');
+    _requiredUri(imageUrl, 'imageUrl');
 
     return ProjectModel(
       title: _requiredString(document, 'title'),
       description: _requiredString(document, 'description'),
-      imagePath: _requiredString(document, 'imageUrl'),
+      imagePath: imageUrl,
       links: links,
     );
+  }
+
+  void _requiredUri(String value, String field) {
+    final uri = Uri.tryParse(value);
+    if (uri == null ||
+        !uri.hasScheme ||
+        (uri.scheme != 'https' && uri.scheme != 'http') ||
+        uri.host.isEmpty) {
+      throw FormatException('Project field "$field" must be an HTTP(S) URL.');
+    }
   }
 
   String _requiredString(Map document, String field) {

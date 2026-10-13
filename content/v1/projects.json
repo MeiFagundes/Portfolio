@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "projects": [
+    {
+      "id": "Pokedex-Flutter",
+      "priority": 0,
+      "title": "Pokedex",
+      "description": "Pokedex App built with Flutter using the PokeAPI (Web, Android, iOS, Windows)",
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Pokedex/main/assets/images/readme-screenshot.png",
+      "links": [
+        { "type": "launch", "url": "https://meifagundes.com/pokedex/" },
+        { "type": "source", "url": "https://github.com/MeiFagundes/Pokedex" }
+      ]
+    },
+    {
+      "id": "Starlight",
+      "priority": 1,
+      "title": "StarlightAI",
+      "description": "Biblioteca de Natural Language Processing (NLP) from scratch que incorpora Machine Learning através da framework ML.NET. O projeto já possui o seu próprio dataset, totalmente aberto e customizável, para treinamento da IA.",
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Portfolio/master/assets/images/Starlight.jpg",
+      "links": [
+        { "type": "source", "url": "https://github.com/MeiFagundes/StarlightAI" }
+      ]
+    },
+    {
+      "id": "PolarisAI",
+      "priority": 2,
+      "title": "PolarisAI",
+      "description": "Biblioteca/RESTful API de processamento de requisições e Assistente Pessoal. Foi desenvolvida usando as funções cognitivas do projeto Starlight. A API pode ser testada através do cliente web disponível no link abaixo.",
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Portfolio/master/assets/images/PolarisAI.png",
+      "links": [
+        { "type": "launch", "url": "https://meifagundes.com/polaris-ai/" },
+        { "type": "source", "url": "https://github.com/MeiFagundes/PolarisAI" }
+      ]
+    },
+    {
+      "id": "MyQuimicaLab",
+      "priority": 3,
+      "title": "MyQuimicaLab",
+      "description": "Projeto de Iniciação Científica em colaboração com o CEFET-MG. Tem como objetivo ensinar química orgânica através da experiência lúdica e descontraída de um jogo. Desenvolvido em JavaScript através da Game Engine Phaser.",
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Portfolio/master/assets/images/MyQuimicaLab.jpg",
+      "links": [
+        { "type": "launch", "url": "https://meifagundes.com/my-quimica-lab/" },
+        { "type": "source", "url": "https://github.com/MyQuimicaLab/MyQuimicaLab.github.io" }
+      ]
+    },
+    {
+      "id": "ListDeclutteringTool",
+      "priority": 4,
+      "title": "ListDeclutteringTool",
+      "description": "Aplicação para limpar, formatar e organizar listas de conteúdo. Facilita principalmente a formatação de dados obtidos da web para usos diversos. Construído em WPF para Windows.",
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Portfolio/master/assets/images/ListDeclutteringTool.jpg",
+      "links": [
+        { "type": "source", "url": "https://github.com/MeiFagundes/ListDeclutteringTool" }
+      ]
+    },
+    {
+      "id": "Sqrt8086",
+      "priority": 5,
+      "title": "Sqrt8086",
+      "description": "Algoritmo escrito em Assembly 8086 que calcula a raiz quadrada de um número com precisão decimal na arquitetura Intel 8086, mesmo com esta não suportando Floating Point e sendo limitada a 16Bits.",
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Portfolio/master/assets/images/Sqrt8086.jpg",
+      "links": [
+        { "type": "source", "url": "https://github.com/MeiFagundes/Sqrt8086" }
+      ]
+    },
+    {
+      "id": "DexDB",
+      "priority": 6,
+      "title": "DexDB",
+      "description": "Proof of concept de uma PokeDex Web com cliente, Servlet e DataBase. Foi escrita em JavaScript, Java e MySQL. Seu design foi inspirado no Material Design da Google.",
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Portfolio/master/assets/images/DexDB.jpg",
+      "links": [
+        { "type": "source", "url": "https://github.com/MeiFagundes/DexDB" }
+      ]
+    }
+  ]
+}

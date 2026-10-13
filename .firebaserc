@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "meifagundesdotcom"
+  },
+  "targets": {
+    "meifagundesdotcom": {
+      "hosting": {
+        "app": ["meifagundesdotcom"],
+        "content": ["meifagundesdotcom-content"],
+        "contentDev": ["meifagundesdotcom-content-dev"]
+      }
+    }
+  }
+}

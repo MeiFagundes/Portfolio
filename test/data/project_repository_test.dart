@@ -4,9 +4,9 @@ import 'package:meifagundesdotcom/data/services/project_service.dart';
 import 'package:meifagundesdotcom/models/project_model.dart';
 
 void main() {
-  group('FirestoreProjectRepository', () {
-    test('maps project fields and known and unknown link types', () async {
-      final repository = FirestoreProjectRepository(
+  group('DefaultProjectRepository', () {
+    test('maps project fields and known link types', () async {
+      final repository = DefaultProjectRepository(
         FakeProjectService([
           _document(
             title: 'Project',
@@ -14,7 +14,6 @@ void main() {
               {'type': 'launch', 'url': 'https://example.com'},
               {'type': 'download', 'url': 'https://example.com/download'},
               {'type': 'source', 'url': 'https://example.com/source'},
-              {'type': 'preview', 'url': 'https://example.com/preview'},
             ],
           ),
         ]),
@@ -25,32 +24,34 @@ void main() {
       expect(projects, hasLength(1));
       expect(projects.single.title, 'Project');
       expect(projects.single.description, 'Description for Project');
-      expect(projects.single.imagePath, 'images/project.png');
+      expect(projects.single.imagePath, 'https://example.com/image.png');
       expect(projects.single.links.map((link) => link.type), [
         ProjectLinkType.launch,
         ProjectLinkType.download,
         ProjectLinkType.source,
-        ProjectLinkType.unknown,
       ]);
-      expect(projects.single.links.last.uri, 'https://example.com/preview');
     });
 
-    test(
-      'preserves service order and returns an immutable project list',
-      () async {
-        final repository = FirestoreProjectRepository(
-          FakeProjectService([
-            _document(title: 'Second'),
-            _document(title: 'First'),
-          ]),
-        );
+    test('sorts by priority and ID and returns an immutable list', () async {
+      final repository = DefaultProjectRepository(
+        FakeProjectService([
+          _document(title: 'Second', id: 'second', priority: 2),
+          _document(title: 'First', id: 'first', priority: 1),
+          _document(title: 'Tie B', id: 'b', priority: 3),
+          _document(title: 'Tie A', id: 'a', priority: 3),
+        ]),
+      );
 
-        final projects = await repository.loadProjects();
+      final projects = await repository.loadProjects();
 
-        expect(projects.map((project) => project.title), ['Second', 'First']);
-        expect(() => projects.add(_model('Third')), throwsUnsupportedError);
-      },
-    );
+      expect(projects.map((project) => project.title), [
+        'First',
+        'Second',
+        'Tie A',
+        'Tie B',
+      ]);
+      expect(() => projects.add(_model('Third')), throwsUnsupportedError);
+    });
 
     test('copies links into an immutable model list', () {
       final links = <ProjectLink>[
@@ -62,7 +63,7 @@ void main() {
       final project = ProjectModel(
         title: 'Project',
         description: 'Description',
-        imagePath: 'image.png',
+        imagePath: 'https://example.com/image.png',
         links: links,
       );
       links.clear();
@@ -71,28 +72,43 @@ void main() {
       expect(() => project.links.clear(), throwsUnsupportedError);
     });
 
-    test('rejects malformed project fields and links', () async {
-      final malformedDocuments = <Map<String, dynamic>>[
-        _document()..['title'] = '',
-        _document()..['links'] = null,
-        _document()..['links'] = ['not a link map'],
-        _document()
-          ..['links'] = [
-            {'type': 'launch', 'url': ''},
+    test(
+      'rejects malformed project fields, links, IDs, and priorities',
+      () async {
+        final malformedDocuments = <List<Map<String, dynamic>>>[
+          [_document()..['title'] = ''],
+          [_document()..['links'] = null],
+          [
+            _document()..['links'] = ['not a link map'],
           ],
-      ];
+          [
+            _document()
+              ..['links'] = [
+                {'type': 'launch', 'url': 'javascript:alert(1)'},
+              ],
+          ],
+          [
+            _document()
+              ..['links'] = [
+                {'type': 'preview', 'url': 'https://example.com'},
+              ],
+          ],
+          [_document(), _document()],
+          [_document()..['priority'] = 'zero'],
+        ];
 
-      for (final document in malformedDocuments) {
-        final repository = FirestoreProjectRepository(
-          FakeProjectService([document]),
-        );
-        await expectLater(repository.loadProjects(), throwsFormatException);
-      }
-    });
+        for (final documents in malformedDocuments) {
+          final repository = DefaultProjectRepository(
+            FakeProjectService(documents),
+          );
+          await expectLater(repository.loadProjects(), throwsFormatException);
+        }
+      },
+    );
 
     test('propagates service failures', () async {
       final error = StateError('service unavailable');
-      final repository = FirestoreProjectRepository(
+      final repository = DefaultProjectRepository(
         FakeProjectService.failure(error),
       );
 
@@ -102,19 +118,23 @@ void main() {
 }
 
 Map<String, dynamic> _document({
+  String id = 'Project-id',
+  int priority = 0,
   String title = 'Project',
   List<dynamic> links = const [],
 }) => {
+  'id': id,
+  'priority': priority,
   'title': title,
   'description': 'Description for $title',
-  'imageUrl': 'images/project.png',
+  'imageUrl': 'https://example.com/image.png',
   'links': links,
 };
 
 ProjectModel _model(String title) => ProjectModel(
   title: title,
   description: 'Description',
-  imagePath: 'image.png',
+  imagePath: 'https://example.com/image.png',
   links: const [],
 );
 

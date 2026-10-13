@@ -1,7 +1,66 @@
-name: Flutter web
-on: [push, pull_request]
+name: Portfolio CI and deployment
+
+on:
+  push:
+    branches: [develop, master]
+  pull_request:
+    branches: [develop, master]
+
+permissions:
+  contents: read
+
+env:
+  FIREBASE_PROJECT_ID: meifagundesdotcom
+
+concurrency:
+  group: portfolio-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
-  verify:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      app: ${{ steps.filter.outputs.app }}
+      content: ${{ steps.filter.outputs.content }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            app:
+              - 'lib/**'
+              - 'web/**'
+              - 'assets/**'
+              - 'hosting/static/**'
+              - 'pubspec.yaml'
+              - 'pubspec.lock'
+              - 'l10n.yaml'
+              - 'firebase.json'
+              - '.firebaserc'
+              - '.github/workflows/**'
+              - 'scripts/prepare_web.py'
+            content:
+              - 'content/**'
+              - 'scripts/validate_content.py'
+
+  validate-content:
+    needs: changes
+    if: needs.changes.outputs.content == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/validate_content.py
+
+  verify-app:
+    needs: changes
+    if: needs.changes.outputs.app == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,5 +74,124 @@ jobs:
       - run: dart format --output=none --set-exit-if-changed lib test
       - run: flutter analyze
       - run: flutter test
-      - run: flutter build web --release --wasm
-      - run: flutter build web --release
+      - name: Build Wasm web app
+        if: github.ref == 'refs/heads/master'
+        run: flutter build web --release --wasm
+      - name: Build development Wasm web app
+        if: github.ref == 'refs/heads/develop'
+        run: >-
+          flutter build web --release --wasm
+          --dart-define=PORTFOLIO_CONTENT_URL=https://meifagundesdotcom-content-dev.web.app/v1/projects.json
+      - run: python3 scripts/prepare_web.py
+      - name: Verify static demos are present in the build
+        run: |
+          for demo in pokedex my-quimica-lab phaser-poc polaris-ai; do
+            test -f "build/web/$demo/index.html"
+          done
+      - name: Build JavaScript compatibility web app
+        run: flutter build web --release --output=build/web-js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-web-${{ github.sha }}
+          path: build/web/
+          if-no-files-found: error
+          retention-days: 1
+
+  deploy-content:
+    needs: [changes, validate-content]
+    if: >-
+      github.event_name == 'push' &&
+      needs.changes.outputs.content == 'true' &&
+      (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    concurrency:
+      group: portfolio-content-${{ github.ref_name }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.18.0'
+      - run: npm install --global firebase-tools@15.33.0
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: projects/97422408923/locations/global/workloadIdentityPools/github-actions-portfolio/providers/github
+          service_account: portfolio-hosting-deployer@meifagundesdotcom.iam.gserviceaccount.com
+      - name: Publish development content
+        if: github.ref == 'refs/heads/develop'
+        run: firebase deploy --only hosting:contentDev --project "$FIREBASE_PROJECT_ID" --non-interactive
+      - name: Publish production content
+        if: github.ref == 'refs/heads/master'
+        run: firebase deploy --only hosting:content --project "$FIREBASE_PROJECT_ID" --non-interactive
+
+  deploy-app:
+    needs: [changes, verify-app, deploy-content]
+    if: >-
+      always() &&
+      github.event_name == 'push' &&
+      needs.changes.result == 'success' &&
+      needs.changes.outputs.app == 'true' &&
+      needs.verify-app.result == 'success' &&
+      (needs.deploy-content.result == 'success' || needs.deploy-content.result == 'skipped') &&
+      (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    concurrency:
+      group: portfolio-app-${{ github.ref_name }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.18.0'
+      - run: npm install --global firebase-tools@15.33.0
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: projects/97422408923/locations/global/workloadIdentityPools/github-actions-portfolio/providers/github
+          service_account: portfolio-hosting-deployer@meifagundesdotcom.iam.gserviceaccount.com
+      - uses: actions/download-artifact@v4
+        with:
+          name: portfolio-web-${{ github.sha }}
+          path: build/web/
+      - name: Deploy production site
+        if: github.ref == 'refs/heads/master'
+        run: firebase deploy --only hosting:app --project "$FIREBASE_PROJECT_ID" --non-interactive
+      - name: Publish stable development preview
+        if: github.ref == 'refs/heads/develop'
+        run: firebase hosting:channel:deploy develop --expires 7d --only app --project "$FIREBASE_PROJECT_ID" --non-interactive
+
+  verification-gate:
+    if: always()
+    needs: [changes, validate-content, verify-app, deploy-content, deploy-app]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check all required jobs
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REF_NAME: ${{ github.ref }}
+          APP_CHANGED: ${{ needs.changes.outputs.app }}
+          CONTENT_CHANGED: ${{ needs.changes.outputs.content }}
+          CHANGES_RESULT: ${{ needs.changes.result }}
+          CONTENT_VALIDATION_RESULT: ${{ needs.validate-content.result }}
+          APP_VERIFICATION_RESULT: ${{ needs.verify-app.result }}
+          CONTENT_DEPLOY_RESULT: ${{ needs.deploy-content.result }}
+          APP_DEPLOY_RESULT: ${{ needs.deploy-app.result }}
+        run: |
+          test "$CHANGES_RESULT" = success
+          if [ "$CONTENT_CHANGED" = true ]; then
+            test "$CONTENT_VALIDATION_RESULT" = success
+          fi
+          if [ "$APP_CHANGED" = true ]; then
+            test "$APP_VERIFICATION_RESULT" = success
+          fi
+          if [ "$EVENT_NAME" = push ] && [ "$CONTENT_CHANGED" = true ]; then
+            test "$CONTENT_DEPLOY_RESULT" = success
+          fi
+          if [ "$EVENT_NAME" = push ] && [ "$APP_CHANGED" = true ]; then
+            test "$APP_DEPLOY_RESULT" = success
+          fi
