@@ -9,13 +9,16 @@ void main() {
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
-    addTearDown(semantics.dispose);
-    await tester.pumpWidget(_host(_project(['Dart']), 'en', 1));
-    await tester.pumpAndSettle();
-    expect(
-      tester.getSemantics(find.byKey(const ValueKey('technology-Dart'))),
-      matchesSemantics(label: 'Dart'),
-    );
+    try {
+      await tester.pumpWidget(_host(_project(['Dart']), 'en', 1));
+      await tester.pumpAndSettle();
+      expect(
+        tester.getSemantics(find.byKey(const ValueKey('technology-Dart'))),
+        matchesSemantics(label: 'Dart'),
+      );
+    } finally {
+      semantics.dispose();
+    }
   });
   for (final language in ['pt', 'en']) {
     for (final width in [320.0, 1000.0]) {
