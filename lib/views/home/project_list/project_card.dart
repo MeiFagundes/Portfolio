@@ -6,7 +6,7 @@ import 'package:meifagundesdotcom/views/shared/shared.dart';
 class ProjectCard extends StatelessWidget {
   final ProjectModel project;
 
-  ProjectCard(this.project);
+  const ProjectCard(this.project, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +21,12 @@ class ProjectCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: LayoutBuilder(
             builder: (context, constraints) {
-              if (constraints.maxWidth >= 665)
-                return desktopLayout;
-              else
-                return mobileLayout;
+              if (constraints.maxWidth >= 665 &&
+                  MediaQuery.textScalerOf(context).scale(1) <= 1.2) {
+                return desktopLayout(context);
+              } else {
+                return mobileLayout(context);
+              }
             },
           ),
         ),
@@ -32,22 +34,22 @@ class ProjectCard extends StatelessWidget {
     );
   }
 
-  Widget get mobileLayout {
+  Widget mobileLayout(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         title,
         description,
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
         image,
-        SizedBox(height: 15),
-        links,
+        const SizedBox(height: 15),
+        links(context),
       ],
     );
   }
 
-  Widget get desktopLayout {
+  Widget desktopLayout(BuildContext context) {
     return Stack(
       alignment: Alignment.bottomLeft,
       children: [
@@ -56,75 +58,69 @@ class ProjectCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                title,
-                Container(
-                  constraints: BoxConstraints(maxWidth: 350),
-                  child: description,
-                ),
-                SizedBox(height: 55),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [title, description, const SizedBox(height: 55)],
+              ),
             ),
-            SizedBox(width: 15),
+            const SizedBox(width: 15),
             Container(
-              constraints: BoxConstraints(maxWidth: 300),
+              constraints: const BoxConstraints(maxWidth: 300),
               child: image,
-            )
+            ),
           ],
         ),
-        links,
+        links(context),
       ],
     );
   }
 
   Widget get title => Padding(
-        padding: const EdgeInsets.only(bottom: 5),
-        child: Text(
-          project.title,
-          style: TextStyles.projectTitle,
-          softWrap: true,
-        ),
-      );
+    padding: const EdgeInsets.only(bottom: 5),
+    child: Text(project.title, style: TextStyles.projectTitle, softWrap: true),
+  );
 
   Widget get description => Text(
-        project.description,
-        style: TextStyles.projectDescription,
-        textAlign: TextAlign.left,
-        softWrap: true,
-      );
+    project.description,
+    style: TextStyles.projectDescription,
+    textAlign: TextAlign.left,
+    softWrap: true,
+  );
 
-  Widget get links => Wrap(
-        spacing: 5,
-        runAlignment: WrapAlignment.start,
-        children: <Widget>[
-          for (final link in project.links)
-            link.hightlighted
-                ? ElevatedButton.icon(
-                    label: Text(
-                      link.description,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    icon: Icon(
-                      link.icon,
-                      color: Colors.white,
-                    ),
-                    onPressed: () => UrlUtil.openURI(link.uri),
-                  )
-                : TextButton.icon(
-                    label: Text(link.description),
-                    icon: Icon(
-                      link.icon,
-                      color: Colors.pinkAccent,
-                    ),
-                    onPressed: () => UrlUtil.openURI(link.uri),
-                  ),
-        ],
-      );
+  Widget links(BuildContext context) => Wrap(
+    spacing: 5,
+    runAlignment: WrapAlignment.start,
+    children: <Widget>[
+      for (final link in project.links)
+        link.hightlighted
+            ? ElevatedButton.icon(
+                label: Text(
+                  link.description,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                icon: Icon(link.icon, color: Colors.white),
+                onPressed: () => UrlUtil.openWithFeedback(context, link.uri),
+              )
+            : TextButton.icon(
+                label: Text(link.description),
+                icon: Icon(link.icon, color: Colors.pinkAccent),
+                onPressed: () => UrlUtil.openWithFeedback(context, link.uri),
+              ),
+    ],
+  );
 
   Widget get image => Center(
-      child: ClipRRect(
-          borderRadius: BorderRadius.circular(BorderRadiusSizes.level2),
-          child: Image.network(project.imagePath)));
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(BorderRadiusSizes.level2),
+      child: Image.network(
+        project.imagePath,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) => const SizedBox(
+          height: 150,
+          child: Center(child: Icon(Icons.broken_image_outlined)),
+        ),
+      ),
+    ),
+  );
 }
