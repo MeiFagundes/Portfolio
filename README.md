@@ -8,6 +8,7 @@ Use Flutter **3.47.7 stable** with its bundled Dart **3.13.5**. CI pins the same
 
 ```sh
 flutter pub get --enforce-lockfile
+flutter gen-l10n
 flutter run -d chrome --wasm
 flutter analyze
 flutter test

@@ -10,6 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
   url_launcher: ^6.3.3
   firebase_core: ^4.15.0
   cloud_firestore: ^6.10.0
@@ -22,6 +25,7 @@ dev_dependencies:
   url_launcher_platform_interface: ^2.3.2
 
 flutter:
+  generate: true
   uses-material-design: true
 
   assets:

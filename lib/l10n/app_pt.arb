@@ -1,0 +1,73 @@
+{
+  "@@locale": "pt",
+  "appTitle": "Mei Fagundes",
+  "@appTitle": {
+    "description": "Nome do portfólio usado como título do aplicativo."
+  },
+  "profileDescription": "Formada no CEFET-MG e Consultora de Software na Thoughtworks. Gosto de fazer uns projetinhos bem aleatórios para testar várias tecnologias legais. Caso te interesse, me segue lá no GitHub ou me mande uma estrelinha através de um dos projetos listados.",
+  "@profileDescription": {
+    "description": "Descrição pessoal exibida no perfil. Preserve a redação original."
+  },
+  "personalProjects": "Projetos Pessoais",
+  "@personalProjects": {
+    "description": "Título da seção de projetos pessoais."
+  },
+  "projectsLoadError": "Não foi possível carregar os projetos.",
+  "@projectsLoadError": {
+    "description": "Mensagem exibida quando não é possível carregar os projetos."
+  },
+  "portfolioLoadError": "Não foi possível carregar o portfólio.",
+  "@portfolioLoadError": {
+    "description": "Mensagem exibida quando não é possível carregar o portfólio."
+  },
+  "retry": "Tentar novamente",
+  "@retry": {
+    "description": "Ação para tentar carregar os dados novamente."
+  },
+  "noProjects": "Nenhum projeto disponível no momento.",
+  "@noProjects": {
+    "description": "Mensagem exibida quando a lista não contém projetos."
+  },
+  "linkOpenError": "Não foi possível abrir o link.",
+  "@linkOpenError": {
+    "description": "Mensagem exibida quando a abertura de um link falha."
+  },
+  "openProject": "Acessar",
+  "@openProject": {
+    "description": "Rótulo do link para abrir um projeto."
+  },
+  "downloadProject": "Baixar",
+  "@downloadProject": {
+    "description": "Rótulo do link para baixar um projeto."
+  },
+  "viewSource": "Ver no GitHub",
+  "@viewSource": {
+    "description": "Rótulo do link para ver o código-fonte de um projeto."
+  },
+  "email": "E-mail",
+  "@email": {
+    "description": "Rótulo do contato por e-mail."
+  },
+  "github": "GitHub",
+  "@github": {
+    "description": "Rótulo do perfil no GitHub."
+  },
+  "linkedin": "LinkedIn",
+  "@linkedin": {
+    "description": "Rótulo do perfil no LinkedIn."
+  },
+  "builtWith": "Built with ",
+  "@builtWith": {
+    "description": "Texto antes do nome Flutter no rodapé. O espaço final é intencional."
+  },
+  "appVersion": "v{version}",
+  "@appVersion": {
+    "description": "Versão do aplicativo exibida no rodapé, precedida por v.",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.7.0"
+      }
+    }
+  }
+}

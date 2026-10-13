@@ -23,6 +23,7 @@ Desktop.ini
 .flutter-plugins
 .flutter-plugins-dependencies
 /build/
+/lib/l10n/generated/
 **/doc/api/
 
 # Test and profiling output
