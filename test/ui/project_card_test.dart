@@ -5,6 +5,18 @@ import 'package:meifagundesdotcom/models/project_model.dart';
 import 'package:meifagundesdotcom/ui/home/widgets/project_card.dart';
 
 void main() {
+  testWidgets('technology labels expose text rather than checkbox controls', (
+    tester,
+  ) async {
+    final semantics = tester.ensureSemantics();
+    addTearDown(semantics.dispose);
+    await tester.pumpWidget(_host(_project(['Dart']), 'en', 1));
+    await tester.pumpAndSettle();
+    expect(
+      tester.getSemantics(find.byKey(const ValueKey('technology-Dart'))),
+      matchesSemantics(label: 'Dart'),
+    );
+  });
   for (final language in ['pt', 'en']) {
     for (final width in [320.0, 1000.0]) {
       for (final scale in [1.0, 2.0]) {
