@@ -30,6 +30,8 @@ jobs:
       - uses: dorny/paths-filter@v3
         id: filter
         with:
+          # Pushes compare only this branch's newly pushed commits; PRs use their base.
+          base: ${{ github.ref }}
           filters: |
             app:
               - 'lib/**'
