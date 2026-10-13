@@ -48,3 +48,6 @@ __pycache__/
 *.py[cod]
 
 # Keep pubspec.lock tracked for reproducible application builds.
+
+# Local documentation
+/docs/
