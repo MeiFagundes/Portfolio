@@ -6,16 +6,9 @@ import 'package:meifagundesdotcom/ui/home/widgets/profile.dart';
 import 'package:meifagundesdotcom/ui/home/widgets/project_list_view.dart';
 import 'package:meifagundesdotcom/ui/core/padding_sizes.dart';
 
-import 'widgets/language_selector.dart';
-
 class Home extends StatelessWidget {
-  const Home({
-    super.key,
-    required this.viewModel,
-    required this.onSelectLanguage,
-  });
+  const Home({super.key, required this.viewModel});
   final HomeViewModel viewModel;
-  final Future<void> Function(String) onSelectLanguage;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +40,6 @@ class Home extends StatelessWidget {
             child: Center(
               child: Column(
                 children: [
-                  LanguageSelector(onSelectLanguage: onSelectLanguage),
                   Profile(onOpenLink: viewModel.openLink),
                   const Divider(),
                   projectList,
@@ -77,7 +69,6 @@ class Home extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      LanguageSelector(onSelectLanguage: onSelectLanguage),
                       Profile(onOpenLink: viewModel.openLink),
                       sourceButton(context),
                       versionNumber(context),

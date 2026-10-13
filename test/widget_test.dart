@@ -196,50 +196,19 @@ void main() {
     expect(second.calls, 1);
   });
 
-  testWidgets(
-    'language selector translates loaded projects and persists without refetching',
-    (tester) async {
-      final project = sampleProject();
-      final repository = FakeProjectRepository(() async => [project]);
-      final store = FakeLocalePreferenceStore();
-      final dependencies = fakeDependencies(repository, null, store);
-      await tester.pumpWidget(PortfolioApp(dependencies: dependencies));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(DropdownButton<String>));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('English').last);
-      await tester.pumpAndSettle();
-      expect(find.text('Personal Projects'), findsOneWidget);
-      expect(
-        find.text(project.descriptionForLanguage('en').concept),
-        findsOneWidget,
-      );
-      expect(find.text('View on GitHub'), findsOneWidget);
-      expect(store.languageCode, 'en');
-      expect(repository.calls, 1);
-      expect(tester.takeException(), isNull);
-    },
-  );
-
-  testWidgets(
-    'saved preference wins over browser language and injected override wins over preference',
-    (tester) async {
-      final dependencies = fakeDependencies(
-        FakeProjectRepository(() async => []),
-        null,
-        FakeLocalePreferenceStore(),
-        'en',
-      );
-      await tester.pumpWidget(PortfolioApp(dependencies: dependencies));
-      await tester.pumpAndSettle();
-      expect(find.text('Personal Projects'), findsOneWidget);
-      await tester.pumpWidget(
-        PortfolioApp(dependencies: dependencies, locale: const Locale('pt')),
-      );
-      await tester.pumpAndSettle();
-      expect(find.text('Projetos Pessoais'), findsOneWidget);
-    },
-  );
+  testWidgets('language is automatic and the selector is hidden', (
+    tester,
+  ) async {
+    tester.platformDispatcher.localesTestValue = [const Locale('en', 'US')];
+    await tester.pumpWidget(
+      PortfolioApp(
+        dependencies: fakeDependencies(FakeProjectRepository(() async => [])),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Personal Projects'), findsOneWidget);
+    expect(find.byType(DropdownButton<String>), findsNothing);
+  });
 
   testWidgets(
     'browser preferences use first supported language and unsupported languages fall back to Portuguese',

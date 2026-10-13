@@ -20,7 +20,7 @@ The local app uses the production content endpoint by default. To try another en
 
 Edit [`content/v2/projects.json`](content/v2/projects.json) to update project descriptions and technology labels. The JSON contract uses `schemaVersion: 2`; each entry contains `id`, integer `priority`, `title`, `descriptions`, `technologies`, `imageUrl`, and `links`. Descriptions contain Portuguese (`pt`) and English (`en`) versions, each with `concept` and `implementation` paragraphs. Technology labels are non-empty strings and must be unique within a project, ignoring case. Link types are `launch`, `download`, or `source`. Run `python3 scripts/validate_content.py` before opening a pull request.
 
-The original v1 content remains available for older clients and rollback. Validation checks both contracts and ensures that project IDs, priorities, titles, image URLs, and links agree. The app loads v2 JSON from Firebase Hosting over HTTP. Responses are cached for up to 60 seconds. A home-screen session loads once and retries on request failure. Language changes select from the loaded descriptions without another request. App-owned text stays in ARB files.
+The original v1 content remains available for older clients and rollback. Validation checks both contracts and ensures that project IDs, priorities, titles, image URLs, and links agree. The app loads v2 JSON from Firebase Hosting over HTTP. Responses are cached for up to 60 seconds. A home-screen session loads once and retries on request failure. App-owned text stays in ARB files.
 
 ## Web hosting and publishing
 
@@ -34,13 +34,13 @@ Firebase Hosting configuration and site targets are in [`firebase.json`](firebas
 
 ## Architecture
 
-The app follows a lean MVVM structure based on [Flutter's architecture recommendations](https://docs.flutter.dev/app-architecture/recommendations). Views render state and forward user actions; view models own loading, retries, language selection, and lifecycle-safe updates. Repositories map validated service data into immutable, plain Dart models. HTTP content, URL launching, and language preference storage are injected services that isolate platform interactions. The project-loading view model survives language changes.
+The app follows a lean MVVM structure based on [Flutter's architecture recommendations](https://docs.flutter.dev/app-architecture/recommendations). Views render state and forward user actions; view models own loading, retries, and lifecycle-safe updates. Repositories map validated service data into immutable, plain Dart models. HTTP content and URL launching are injected services that isolate platform interactions.
 
 | Directory | Responsibility |
 | --- | --- |
 | `lib/app/` | Startup, dependency composition, app configuration, and locale-independent identity |
 | `lib/models/` | Immutable project data and link types, with no Flutter or backend dependencies |
-| `lib/data/` | Repository contracts, HTTP, URL launching, and language preference storage |
+| `lib/data/` | Repository contracts, HTTP, and URL launching |
 | `lib/ui/` | Views, feature view models, reusable presentation widgets, and theme |
 | `lib/l10n/` | App-owned messages and generated localization configuration |
 | `content/` | Versioned, Git-managed project data and translations |
@@ -50,7 +50,7 @@ The single-screen app does not need a use-case layer, service locator, routing f
 
 ## Localization
 
-App-owned copy lives in Portuguese and English ARB catalogs, using [Flutter's ARB and gen-l10n workflow](https://docs.flutter.dev/ui/internationalization). The first supported browser language is selected automatically; unsupported preferences fall back to Portuguese. The visible language selector stores explicit choices locally through `SharedPreferencesAsync`. Read or write failures leave the app usable. Saved choices override browser preferences, and explicit `PortfolioApp.locale` or `PortfolioBootstrap.locale` values take precedence for testing.
+App-owned copy lives in Portuguese and English ARB catalogs, using [Flutter's ARB and gen-l10n workflow](https://docs.flutter.dev/ui/internationalization). The app follows the first supported browser language automatically, and falls back to Portuguese when none is supported. There is currently no visible language selector or saved language choice. Explicit `PortfolioApp.locale` or `PortfolioBootstrap.locale` values remain available for testing.
 
 To add a language, add `lib/l10n/app_<language>.arb` with the same message keys and placeholder definitions, run `flutter gen-l10n`, then verify locale selection, labels, long translations, and text scaling. `PortfolioApp.locale` and `PortfolioBootstrap.locale` allow an explicit locale override.
 

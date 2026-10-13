@@ -5,7 +5,6 @@ import '../ui/core/app_theme.dart';
 import '../ui/home/home_view.dart';
 import '../ui/home/home_view_model.dart';
 import 'dependencies.dart';
-import 'app_locale_view_model.dart';
 
 class PortfolioApp extends StatefulWidget {
   const PortfolioApp({super.key, required this.dependencies, this.locale});
@@ -18,7 +17,6 @@ class PortfolioApp extends StatefulWidget {
 
 class _PortfolioAppState extends State<PortfolioApp> {
   late HomeViewModel _viewModel;
-  late AppLocaleViewModel _localeViewModel;
 
   @override
   void initState() {
@@ -27,10 +25,6 @@ class _PortfolioAppState extends State<PortfolioApp> {
   }
 
   void _createViewModel() {
-    _localeViewModel = AppLocaleViewModel(
-      store: widget.dependencies.localePreferenceStore,
-      initialLanguageCode: widget.dependencies.initialLanguageCode,
-    );
     _viewModel = HomeViewModel(
       repository: widget.dependencies.projectRepository,
       linkLauncher: widget.dependencies.linkLauncher,
@@ -42,7 +36,6 @@ class _PortfolioAppState extends State<PortfolioApp> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.dependencies != widget.dependencies) {
       _viewModel.dispose();
-      _localeViewModel.dispose();
       _createViewModel();
     }
   }
@@ -50,32 +43,29 @@ class _PortfolioAppState extends State<PortfolioApp> {
   @override
   void dispose() {
     _viewModel.dispose();
-    _localeViewModel.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => ListenableBuilder(
-    listenable: _localeViewModel,
-    builder: (context, child) => MaterialApp(
-      onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-      theme: buildAppTheme(),
-      locale:
-          widget.locale ??
-          (_localeViewModel.selectedLanguageCode == null
-              ? null
-              : Locale(_localeViewModel.selectedLanguageCode!)),
-      localeListResolutionCallback: (locales, supportedLocales) => Locale(
-        AppLocaleViewModel.resolveLanguageCode(
-          locales?.map((locale) => locale.languageCode).toList() ?? const [],
-        ),
-      ),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: Home(
-        viewModel: _viewModel,
-        onSelectLanguage: _localeViewModel.selectLanguage,
+  Widget build(BuildContext context) => MaterialApp(
+    onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
+    theme: buildAppTheme(),
+    locale: widget.locale,
+    localeListResolutionCallback: (locales, supportedLocales) => Locale(
+      _resolveLanguageCode(
+        locales?.map((locale) => locale.languageCode).toList() ?? const [],
       ),
     ),
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    home: Home(viewModel: _viewModel),
   );
+
+  static String _resolveLanguageCode(List<String> languageCodes) {
+    for (final languageCode in languageCodes) {
+      final baseCode = languageCode.split(RegExp('[-_]')).first.toLowerCase();
+      if (const ['pt', 'en'].contains(baseCode)) return baseCode;
+    }
+    return 'pt';
+  }
 }
