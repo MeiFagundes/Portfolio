@@ -1,178 +1,127 @@
 import 'dart:async';
 
-import 'package:meifagundesdotcom/main.dart';
-
-import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
-import 'package:meifagundesdotcom/utils/url_util.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meifagundesdotcom/app/app.dart';
+import 'package:meifagundesdotcom/app/dependencies.dart';
+import 'package:meifagundesdotcom/app/bootstrap.dart';
+import 'package:meifagundesdotcom/app/portfolio_content.dart';
+import 'package:meifagundesdotcom/l10n/generated/app_localizations.dart';
 import 'package:meifagundesdotcom/models/project_model.dart';
-import 'package:meifagundesdotcom/views/home/home_view.dart';
-import 'package:meifagundesdotcom/views/home/project_list/project_list_view.dart';
+import 'package:meifagundesdotcom/ui/home/widgets/project_link_presentation.dart';
 
-class TestLauncher extends UrlLauncherPlatform {
-  @override
-  Null get linkDelegate => null;
-  bool result = true;
-  int checks = 0;
-  String? lastUrl;
-  @override
-  Future<bool> canLaunch(String url) async {
-    checks++;
-    return true;
-  }
-
-  @override
-  Future<bool> launchUrl(String url, LaunchOptions options) async {
-    lastUrl = url;
-    return result;
-  }
-}
+import 'fakes.dart';
 
 void main() {
-  testWidgets('Initialization failures offer retry', (tester) async {
+  testWidgets('Initialization failures offer retry and can recover', (
+    tester,
+  ) async {
     var calls = 0;
+    final dependencies = fakeDependencies(
+      FakeProjectRepository(() async => []),
+    );
     await tester.pumpWidget(
       PortfolioBootstrap(
         initialize: () async {
           calls++;
-          throw Exception('unavailable');
+          if (calls == 1) throw StateError('unavailable');
+          return dependencies;
         },
       ),
     );
     await tester.pumpAndSettle();
     expect(find.text('Não foi possível carregar o portfólio.'), findsOneWidget);
+    await tester.ensureVisible(find.text('Tentar novamente'));
     await tester.tap(find.text('Tentar novamente'));
     await tester.pumpAndSettle();
+    expect(find.text('Projetos Pessoais'), findsOneWidget);
     expect(calls, 2);
   });
 
-  testWidgets('Links launch directly and display failure feedback', (
+  testWidgets('Replacing the initializer ignores the old pending startup', (
     tester,
   ) async {
-    final previous = UrlLauncherPlatform.instance;
-    final launcher = TestLauncher();
-    UrlLauncherPlatform.instance = launcher;
-    addTearDown(() => UrlLauncherPlatform.instance = previous);
-    expect(await UrlUtil.openURI(UrlUtil.urlGithub), isTrue);
-    expect(launcher.lastUrl, UrlUtil.urlGithub);
-    expect(launcher.checks, 0);
-    launcher.result = false;
+    final pending = Completer<AppDependencies>();
+    final oldRepository = FakeProjectRepository(() async => []);
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: Builder(
-            builder: (context) => TextButton(
-              onPressed: () =>
-                  UrlUtil.openWithFeedback(context, UrlUtil.urlEmail),
-              child: const Text('Open'),
-            ),
-          ),
-        ),
-      ),
+      PortfolioBootstrap(initialize: () => pending.future),
     );
-    await tester.tap(find.text('Open'));
+    await tester.pump();
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    final newRepository = FakeProjectRepository(() async => []);
+    final dependencies = fakeDependencies(newRepository);
+    await tester.pumpWidget(
+      PortfolioBootstrap(initialize: () async => dependencies),
+    );
     await tester.pumpAndSettle();
-    expect(find.text('Não foi possível abrir o link.'), findsOneWidget);
+    pending.complete(fakeDependencies(oldRepository));
+    await tester.pumpAndSettle();
+    expect(find.text('Projetos Pessoais'), findsOneWidget);
+    expect(newRepository.calls, 1);
+    expect(oldRepository.calls, 0);
+    expect(tester.takeException(), isNull);
   });
 
-  test('Project parsing preserves content and rejects malformed documents', () {
-    final data = <String, dynamic>{
-      'title': 'Projeto',
-      'description': 'Descrição',
-      'imageUrl': 'https://example.com/image.png',
-      'links': [
-        {'type': 'launch', 'url': 'https://example.com'},
-      ],
-    };
-    final project = ProjectModel.fromMap(data);
-    expect(project.title, 'Projeto');
-    expect(project.links.single.description, 'Acessar');
-    expect(() => project.links.clear(), throwsUnsupportedError);
-    expect(
-      () => ProjectModel.fromMap({...data, 'links': null}),
-      throwsFormatException,
-    );
-    expect(
-      () => ProjectModel.fromMap({...data, 'title': 2}),
-      throwsFormatException,
-    );
-  });
-
-  testWidgets('Loading, failure, retry and empty results', (tester) async {
+  testWidgets('Loading, failure, failed retry and recovery to empty results', (
+    tester,
+  ) async {
     final pending = Completer<List<ProjectModel>>();
     var calls = 0;
+    final repository = FakeProjectRepository(() {
+      calls++;
+      if (calls == 1) return pending.future;
+      if (calls == 2) throw StateError('still offline');
+      return Future.value([]);
+    });
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: ProjectListView(
-            loadProjects: () {
-              calls++;
-              return calls == 1 ? pending.future : Future.value([]);
-            },
-          ),
-        ),
-      ),
+      PortfolioApp(dependencies: fakeDependencies(repository)),
     );
+    await tester.pump();
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    pending.completeError(Exception('offline'));
+    pending.completeError(StateError('offline'));
     await tester.pumpAndSettle();
     expect(find.text('Não foi possível carregar os projetos.'), findsOneWidget);
+    await tester.ensureVisible(find.text('Tentar novamente'));
+    await tester.tap(find.text('Tentar novamente'));
+    await tester.pumpAndSettle();
+    expect(find.text('Não foi possível carregar os projetos.'), findsOneWidget);
+    await tester.ensureVisible(find.text('Tentar novamente'));
     await tester.tap(find.text('Tentar novamente'));
     await tester.pumpAndSettle();
     expect(find.text('Nenhum projeto disponível no momento.'), findsOneWidget);
-    expect(calls, 2);
+    expect(repository.calls, 3);
   });
 
-  testWidgets('Successful projects render long content without overflow', (
+  testWidgets('Successful projects preserve content and handle long titles', (
     tester,
   ) async {
-    final project = ProjectModel(
-      title: List.filled(20, 'Projeto').join(' '),
-      description: 'Descrição preservada',
-      imagePath: 'https://example.com/image.png',
-      links: [ProjectLink.fromType(type: 'source', uri: 'https://example.com')],
-    );
+    final project = sampleProject(title: List.filled(20, 'Projeto').join(' '));
+    final repository = FakeProjectRepository(() async => [project]);
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(1000, 900);
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: SingleChildScrollView(
-            child: ProjectListView(loadProjects: () async => [project]),
-          ),
-        ),
-      ),
+      PortfolioApp(dependencies: fakeDependencies(repository)),
     );
     await tester.pumpAndSettle();
     expect(find.text(project.title), findsOneWidget);
+    expect(find.text(project.description), findsOneWidget);
     expect(find.text('Ver no GitHub'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Home keeps its request through breakpoints and enlarged text', (
+  testWidgets('Layouts and locale changes preserve the home request', (
     tester,
   ) async {
-    var calls = 0;
+    final repository = FakeProjectRepository(() async => []);
+    final dependencies = fakeDependencies(repository);
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(1400, 900);
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Home(
-          loadProjects: () async {
-            calls++;
-            return [];
-          },
-        ),
-      ),
-    );
+    await tester.pumpWidget(PortfolioApp(dependencies: dependencies));
     await tester.pumpAndSettle();
-    expect(find.text('Mei Fagundes'), findsOneWidget);
     for (final size in [
       const Size(320, 700),
       const Size(1200, 400),
@@ -182,18 +131,57 @@ void main() {
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
     }
-    expect(calls, 1);
+    // Unsupported browser locales fall back to the existing Portuguese catalog.
     await tester.pumpWidget(
-      MaterialApp(
-        builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context)
-              .copyWith(textScaler: const TextScaler.linear(2)),
-          child: child!,
-        ),
-        home: Home(loadProjects: () async => []),
-      ),
+      PortfolioApp(dependencies: dependencies, locale: const Locale('en')),
     );
     await tester.pumpAndSettle();
-    expect(tester.takeException(), isNull);
+    expect(find.text('Projetos Pessoais'), findsOneWidget);
+    expect(repository.calls, 1);
+    final context = tester.element(find.text('Projetos Pessoais'));
+    expect(Localizations.localeOf(context), const Locale('pt'));
+    final strings = AppLocalizations.of(context);
+    expect(strings.appVersion(PortfolioContent.version), 'v1.7.0');
+    expect(ProjectLinkType.download.label(strings), 'Baixar');
+    expect(ProjectLinkType.unknown.label(strings), isEmpty);
+  });
+
+  testWidgets(
+    'Enlarged text and link failure feedback work with localization',
+    (tester) async {
+      final links = FakeLinkLauncher()..result = false;
+      final dependencies = fakeDependencies(
+        FakeProjectRepository(() async => []),
+        links,
+      );
+      await tester.pumpWidget(PortfolioApp(dependencies: dependencies));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('GitHub'));
+      await tester.tap(find.text('GitHub'));
+      await tester.pumpAndSettle();
+      expect(links.lastUri, PortfolioContent.githubUrl);
+      expect(find.text('Não foi possível abrir o link.'), findsOneWidget);
+      tester.platformDispatcher.textScaleFactorTestValue = 2;
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets('Replacing injected dependencies replaces the view model', (
+    tester,
+  ) async {
+    final first = FakeProjectRepository(() async => []);
+    await tester.pumpWidget(
+      PortfolioApp(dependencies: fakeDependencies(first)),
+    );
+    await tester.pumpAndSettle();
+    final second = FakeProjectRepository(() async => []);
+    await tester.pumpWidget(
+      PortfolioApp(dependencies: fakeDependencies(second)),
+    );
+    await tester.pumpAndSettle();
+    expect(first.calls, 1);
+    expect(second.calls, 1);
   });
 }
