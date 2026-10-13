@@ -69,12 +69,12 @@
       "title": "PolarisAI",
       "descriptions": {
         "pt": {
-          "concept": "PolarisAI é uma API em C# e .NET Core para processar requisições por meio de intenções e handlers. O projeto combina uma API JSON com persistência em SQL Server e os recursos de processamento de linguagem natural fornecidos pela biblioteca Starlight.",
-          "implementation": "A aplicação usa ASP.NET Core para expor os endpoints JSON, ML.NET no fluxo de classificação e SQL Server para armazenar dados. Os handlers encaminham as intenções reconhecidas para operações específicas e a camada de persistência apoia essas operações. O cliente web disponibilizado pelo projeto permite interagir com a API, apresentando um caminho concreto para experimentar o processamento de requisições."
+          "concept": "PolarisAI é um mecanismo experimental de assistente pessoal que interpreta solicitações e constrói respostas a partir de intenções e entidades. Desenvolvido em C# e .NET Core, ele utiliza os recursos de processamento de linguagem natural do Starlight para conectar o entendimento de uma solicitação a um comportamento específico.",
+          "implementation": "Uma API HTTP/JSON em ASP.NET Core expõe o processamento ao cliente, enquanto handlers associados às intenções produzem as respostas. O SQL Server armazena detalhes de solicitações, entidades e intenções reconhecidas. Um cliente web separado demonstra o consumo da API. O projeto explora a integração entre classificação de texto, extração de dados, construção de respostas e persistência em uma aplicação de assistente pessoal."
         },
         "en": {
-          "concept": "PolarisAI is a C# and .NET Core API that processes requests through intents and handlers. The project combines a JSON API with SQL Server persistence and the natural language processing capabilities provided by the Starlight library.",
-          "implementation": "ASP.NET Core exposes the JSON endpoints, ML.NET is used in the classification flow, and SQL Server stores data. Handlers route recognized intents to specific operations, supported by a persistence layer. The project's web client provides an interactive way to try the API and follow a request through its intent-based processing flow."
+          "concept": "PolarisAI is an experimental personal-assistant engine that interprets requests and builds responses from intents and entities. Developed with C# and .NET Core, it uses Starlight’s natural language processing capabilities to connect the meaning of a request to a specific behavior.",
+          "implementation": "An ASP.NET Core HTTP/JSON API exposes processing to clients, while intent-specific handlers produce responses. SQL Server stores details of requests, entities, and recognized intents. A separate web client demonstrates consuming the API. The project explores the integration of text classification, entity extraction, response construction, and persistence within a personal-assistant application."
         }
       },
       "technologies": [
@@ -107,7 +107,7 @@
           "implementation": "Feito com JavaScript e Phaser, o jogo combina exploração de um laboratório, coleta de recursos e questões sobre moléculas. HTML5 e CSS compõem a interface, e um conjunto de dados JSON fornece nomes, fórmulas e propriedades usadas nas perguntas. Controllers separados coordenam movimentação, recursos e questões, conectando a experiência de jogo aos temas de química orgânica trabalhados."
         },
         "en": {
-          "concept": "MyQuimicaLab is a scientific initiation project developed in collaboration with CEFET-MG. The game explores playful ways to present organic chemistry topics, including functional groups, hybridization, and nomenclature, through activities supported by a molecular dataset.",
+          "concept": "MyQuimicaLab is a student research project developed in collaboration with CEFET-MG. The game explores playful ways to present organic chemistry topics, including functional groups, hybridization, and nomenclature, through activities supported by a molecular dataset.",
           "implementation": "Built with JavaScript and Phaser, the game combines laboratory exploration, resource collection, and questions about molecules. HTML5 and CSS form the interface, while a JSON dataset supplies names, formulas, and properties used in the questions. Separate controllers coordinate movement, resources, and questions, connecting the gameplay experience to the organic chemistry topics being explored."
         }
       },
@@ -137,7 +137,7 @@
       "descriptions": {
         "pt": {
           "concept": "ListDeclutteringTool é um aplicativo desktop para Windows voltado à limpeza e organização de listas. A proposta é transformar conteúdo copiado da web ou carregado de arquivos em uma lista mais fácil de reutilizar, com opções para definir separadores e remover valores numéricos ou trechos indesejados.",
-          "implementation": "Escrito em C# com .NET Framework, o programa usa WPF e XAML para apresentar suas opções de transformação. Ele divide o texto por espaços, tabulações, pontos ou um separador personalizado, descarta entradas vazias e pode remover itens reconhecidos como números inteiros. A entrada e a saída funcionam pela área de transferência ou por arquivos de texto, aproximando as operações do fluxo cotidiano de copiar, editar e salvar."
+          "implementation": "Escrito em C# com .NET Framework, o programa usa WPF e XAML para apresentar suas opções de transformação. Ele divide o texto por espaços, tabulações, pontos ou um separador personalizado, descarta entradas vazias e pode remover itens reconhecidos como números inteiros. A entrada e a saída funcionam pela área de transferência ou por arquivos de texto."
         },
         "en": {
           "concept": "ListDeclutteringTool is a Windows desktop application for cleaning and organizing lists. It turns content copied from the web or loaded from files into a list that is easier to reuse, with options to configure separators and remove numeric entries or unwanted text.",
@@ -193,8 +193,8 @@
       "title": "DexDB",
       "descriptions": {
         "pt": {
-          "concept": "DexDB é um protótipo educacional de Pokédex web que reúne uma interface no navegador, um servlet e um banco de dados. O projeto explora a comunicação entre essas partes e foi concebido como prova de conceito, com uma apresentação visual inspirada no Material Design.",
-          "implementation": "O cliente usa JavaScript e Materialize para apresentar cartões de Pokémon e enviar requisições ao servidor. Um Java Servlet recebe essas consultas, usa JDBC para acessar registros no MySQL e devolve os dados ao navegador. O projeto permite estudar, em um exemplo compacto, o fluxo completo entre interface, processamento no servidor e armazenamento relacional, além da montagem dinâmica dos cartões a partir dos registros recebidos."
+          "concept": "DexDB é um protótipo educacional de Pokédex web que reúne uma interface no navegador, um servlet e um banco de dados. O projeto explora a comunicação entre essas partes como prova de conceito, com uma apresentação visual inspirada no Material Design.",
+          "implementation": "O cliente usa JavaScript e Materialize para apresentar cartões de Pokémon e enviar requisições ao servidor. Um Java Servlet recebe as consultas, usa JDBC para acessar registros no MySQL e devolve os dados ao navegador. O projeto permite estudar o fluxo entre interface, processamento no servidor e armazenamento relacional, incluindo a montagem dinâmica dos cartões a partir dos registros recebidos."
         },
         "en": {
           "concept": "DexDB is an educational web Pokédex prototype that brings together a browser interface, a servlet, and a database. The project explores communication between these parts and was built as a proof of concept, with a visual presentation inspired by Material Design.",
