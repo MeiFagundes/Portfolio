@@ -17,19 +17,22 @@ class TechnologyTags extends StatelessWidget {
           for (final technology in technologies)
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: constraints.maxWidth),
-              child: Semantics(
-                container: true,
+              child: DecoratedBox(
                 key: ValueKey('technology-$technology'),
-                label: technology,
-                child: ExcludeSemantics(
-                  child: Chip(
-                    label: Text(technology, softWrap: true),
-                    labelStyle: Theme.of(context).textTheme.labelLarge
+                decoration: ShapeDecoration(
+                  color: colors.secondaryContainer,
+                  shape: const StadiumBorder(),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  child: Text(
+                    technology,
+                    softWrap: true,
+                    style: Theme.of(context).textTheme.labelLarge
                         ?.copyWith(color: colors.onSecondaryContainer),
-                    backgroundColor: colors.secondaryContainer,
-                    side: BorderSide.none,
-                    shape: const StadiumBorder(),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                 ),
               ),

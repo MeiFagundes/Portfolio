@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:meifagundesdotcom/l10n/generated/app_localizations.dart';
 import 'package:meifagundesdotcom/models/project_model.dart';
 import 'package:meifagundesdotcom/ui/home/widgets/project_card.dart';
+import 'package:meifagundesdotcom/ui/home/widgets/technology_tags.dart';
 
 void main() {
   testWidgets('technology labels expose text rather than checkbox controls', (
@@ -10,10 +11,14 @@ void main() {
   ) async {
     final semantics = tester.ensureSemantics();
     try {
-      await tester.pumpWidget(_host(_project(['Dart']), 'en', 1));
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(body: TechnologyTags(technologies: ['Dart'])),
+        ),
+      );
       await tester.pumpAndSettle();
       expect(
-        tester.getSemantics(find.byKey(const ValueKey('technology-Dart'))),
+        tester.getSemantics(find.text('Dart')),
         matchesSemantics(label: 'Dart'),
       );
     } finally {
@@ -41,14 +46,27 @@ void main() {
           final description = project.descriptionForLanguage(language);
           expect(find.text(description.concept), findsOneWidget);
           expect(find.text(description.implementation), findsOneWidget);
-          expect(find.byType(Chip), findsNWidgets(4));
+          for (final technology in project.technologies) {
+            expect(
+              find.byKey(ValueKey('technology-$technology')),
+              findsOneWidget,
+            );
+          }
           final action = find.text(
             language == 'pt' ? 'Ver no GitHub' : 'View on GitHub',
           );
           expect(action, findsOneWidget);
           expect(
             tester.getTopLeft(action).dy,
-            greaterThan(tester.getBottomLeft(find.byType(Chip).last).dy),
+            greaterThan(
+              tester
+                  .getBottomLeft(
+                    find.byKey(
+                      ValueKey('technology-${project.technologies.last}'),
+                    ),
+                  )
+                  .dy,
+            ),
           );
           expect(tester.takeException(), isNull);
         });
@@ -61,7 +79,7 @@ void main() {
   ) async {
     await tester.pumpWidget(_host(_project([]), 'pt', 1));
     await tester.pumpAndSettle();
-    expect(find.byType(Chip), findsNothing);
+    expect(find.byType(TechnologyTags), findsNothing);
     expect(find.text('Ver no GitHub'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });

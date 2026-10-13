@@ -93,7 +93,14 @@ class ProjectCard extends StatelessWidget {
 
   Widget get title => Padding(
     padding: const EdgeInsets.only(bottom: 5),
-    child: Text(project.title, style: TextStyles.projectTitle, softWrap: true),
+    child: Semantics(
+      header: true,
+      child: Text(
+        project.title,
+        style: TextStyles.projectTitle,
+        softWrap: true,
+      ),
+    ),
   );
 
   Widget links(BuildContext context) => Wrap(
@@ -132,6 +139,7 @@ class ProjectCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(BorderRadiusSizes.level2),
       child: Image.network(
         project.imagePath,
+        excludeFromSemantics: true,
         fit: BoxFit.contain,
         errorBuilder: (context, error, stackTrace) => const SizedBox(
           height: 150,
