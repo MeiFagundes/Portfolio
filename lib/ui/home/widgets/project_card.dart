@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:meifagundesdotcom/l10n/generated/app_localizations.dart';
 import 'package:meifagundesdotcom/models/project_model.dart';
-import 'package:meifagundesdotcom/utils/url_util.dart';
-import 'package:meifagundesdotcom/views/shared/shared.dart';
+import 'package:meifagundesdotcom/ui/core/shared.dart';
+import 'package:meifagundesdotcom/ui/home/widgets/project_link_presentation.dart';
 
 class ProjectCard extends StatelessWidget {
   final ProjectModel project;
+  final Future<bool> Function(String) onOpenLink;
 
-  const ProjectCard(this.project, {super.key});
+  const ProjectCard(this.project, {super.key, required this.onOpenLink});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class ProjectCard extends StatelessWidget {
 
   Widget desktopLayout(BuildContext context) {
     return Stack(
-      alignment: Alignment.bottomLeft,
+      alignment: AlignmentDirectional.bottomStart,
       children: [
         Row(
           mainAxisSize: MainAxisSize.min,
@@ -84,7 +86,7 @@ class ProjectCard extends StatelessWidget {
   Widget get description => Text(
     project.description,
     style: TextStyles.projectDescription,
-    textAlign: TextAlign.left,
+    textAlign: TextAlign.start,
     softWrap: true,
   );
 
@@ -93,22 +95,30 @@ class ProjectCard extends StatelessWidget {
     runAlignment: WrapAlignment.start,
     children: <Widget>[
       for (final link in project.links)
-        link.hightlighted
+        link.type.isHighlighted
             ? ElevatedButton.icon(
                 label: Text(
-                  link.description,
+                  link.type.label(AppLocalizations.of(context)),
                   style: const TextStyle(color: Colors.white),
                 ),
-                icon: Icon(link.icon, color: Colors.white),
-                onPressed: () => UrlUtil.openWithFeedback(context, link.uri),
+                icon: Icon(link.type.icon, color: Colors.white),
+                onPressed: () => _open(context, link.uri),
               )
             : TextButton.icon(
-                label: Text(link.description),
-                icon: Icon(link.icon, color: Colors.pinkAccent),
-                onPressed: () => UrlUtil.openWithFeedback(context, link.uri),
+                label: Text(link.type.label(AppLocalizations.of(context))),
+                icon: Icon(link.type.icon, color: Colors.pinkAccent),
+                onPressed: () => _open(context, link.uri),
               ),
     ],
   );
+
+  Future<void> _open(BuildContext context, String uri) async {
+    if (!await onOpenLink(uri) && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context).linkOpenError)),
+      );
+    }
+  }
 
   Widget get image => Center(
     child: ClipRRect(

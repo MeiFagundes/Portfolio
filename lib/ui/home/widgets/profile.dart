@@ -1,26 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:meifagundesdotcom/utils/url_util.dart';
-import 'package:meifagundesdotcom/views/shared/custom_icons.dart';
-import 'package:meifagundesdotcom/views/shared/text_styles.dart';
+import 'package:meifagundesdotcom/app/portfolio_content.dart';
+import 'package:meifagundesdotcom/l10n/generated/app_localizations.dart';
+import 'package:meifagundesdotcom/ui/core/custom_icons.dart';
+import 'package:meifagundesdotcom/ui/core/text_styles.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({super.key});
+  final Future<bool> Function(String) onOpenLink;
+
+  const Profile({super.key, required this.onOpenLink});
 
   @override
   Widget build(BuildContext context) {
-    final spacer = const SizedBox(height: 10);
+    final localizations = AppLocalizations.of(context);
+    const spacer = SizedBox(height: 10);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         const CircleAvatar(
-          backgroundImage: AssetImage('assets/images/mei.jpg'),
+          backgroundImage: AssetImage(PortfolioContent.imageAsset),
           backgroundColor: Colors.transparent,
           maxRadius: 100,
         ),
         spacer,
-        Text('Mei Fagundes', style: TextStyles.profileName),
+        Text(PortfolioContent.name, style: TextStyles.profileName),
         spacer,
         const Row(
           children: [
@@ -32,7 +36,7 @@ class Profile extends StatelessWidget {
         spacer,
         Center(
           child: Text(
-            'Formada no CEFET-MG e Consultora de Software na Thoughtworks. Gosto de fazer uns projetinhos bem aleatórios para testar várias tecnologias legais. Caso te interesse, me segue lá no GitHub ou me mande uma estrelinha através de um dos projetos listados.',
+            localizations.profileDescription,
             style: TextStyles.profileDescription,
             textAlign: TextAlign.center,
           ),
@@ -51,27 +55,32 @@ class Profile extends StatelessWidget {
           spacing: 8,
           children: [
             TextButton.icon(
-              onPressed: () =>
-                  UrlUtil.openWithFeedback(context, UrlUtil.urlEmail),
+              onPressed: () => _open(context, PortfolioContent.emailUrl),
               icon: const Icon(Icons.email, color: Colors.pinkAccent),
-              label: const Text('E-mail'),
+              label: Text(localizations.email),
             ),
             TextButton.icon(
-              onPressed: () =>
-                  UrlUtil.openWithFeedback(context, UrlUtil.urlGithub),
+              onPressed: () => _open(context, PortfolioContent.githubUrl),
               icon: const Icon(CustomIcons.github, color: Colors.pinkAccent),
-              label: const Text('GitHub'),
+              label: Text(localizations.github),
             ),
             TextButton.icon(
-              onPressed: () =>
-                  UrlUtil.openWithFeedback(context, UrlUtil.urlLinkedin),
+              onPressed: () => _open(context, PortfolioContent.linkedinUrl),
               icon: const Icon(CustomIcons.linkedin, color: Colors.pinkAccent),
-              label: const Text('LinkedIn'),
+              label: Text(localizations.linkedin),
             ),
           ],
         ),
         spacer,
       ],
     );
+  }
+
+  Future<void> _open(BuildContext context, String uri) async {
+    if (!await onOpenLink(uri) && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context).linkOpenError)),
+      );
+    }
   }
 }
