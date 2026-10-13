@@ -10,7 +10,7 @@ class TextStyles {
       Shadow(
         color: Colors.grey[400]!,
         blurRadius: 1.2,
-        offset: Offset(0.7, 0.7),
+        offset: const Offset(0.7, 0.7),
       ),
     ],
   );
@@ -24,7 +24,7 @@ class TextStyles {
       Shadow(
         color: Colors.grey[400]!,
         blurRadius: 1.5,
-        offset: Offset(0.7, 0.7),
+        offset: const Offset(0.7, 0.7),
       ),
     ],
   );
@@ -50,7 +50,7 @@ class TextStyles {
     letterSpacing: 0.7,
   );
 
-  static final TextStyle profileButton = TextStyle(
+  static final TextStyle profileButton = const TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w600,
     color: Colors.pinkAccent,

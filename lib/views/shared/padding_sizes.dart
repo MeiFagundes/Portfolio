@@ -1,3 +1,3 @@
 class PaddingSizes {
-  static get homePadding => 50.0;
+  static double get homePadding => 50.0;
 }
