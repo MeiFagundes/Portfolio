@@ -1,61 +1,50 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
+# Operating system and editor files
 .DS_Store
-.atom/
-.buildlog/
-.history
-.svn/
-
-# IntelliJ related
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+.history/
+.idea/
 *.iml
 *.ipr
 *.iws
-.idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# Personal VS Code settings; shared launch configurations remain tracked
+.vscode/settings.json
+.vscode/*.local.json
 
-# Flutter/Dart/Pub related
-**/doc/api/
+# Dart and Flutter generated files and caches
 .dart_tool/
+.packages
+.pub/
+.pub-cache/
 .flutter-plugins
 .flutter-plugins-dependencies
-.packages
-.pub-cache/
-.pub/
 /build/
-pubspec.lock
+**/doc/api/
 
-# Web related
+# Test and profiling output
+/coverage/
+*.lcov
+*.log
+*.symbols
+*.dill
+*.stackdump
 
-# Exceptions to above rules.
-!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+# Local environment and Firebase tooling
+.env
+.env.*
+!.env.example
+!.env.*.example
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
 
-unity/*
+# Python helper caches
+__pycache__/
+*.py[cod]
 
-# fastlane specific
-**/fastlane/README.md
-**/fastlane/report.xml
-
-# deliver temporary files
-**/fastlane/Preview.html
-
-# snapshot generated screenshots
-**/fastlane/screenshots
-
-# scan temporary files
-**/fastlane/test_output
-
-**/fastlane/metadata
-
-# apple
-/ios/hermespardini.app.*.zip
-/ios/hermespardini.ipa
-/ios/Runner.app.*.zip
-/ios/Runner.ipa
-/ios/build/
+# Keep pubspec.lock tracked for reproducible application builds.
