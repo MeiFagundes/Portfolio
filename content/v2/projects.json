@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 2,
+  "projects": [
+    {
+      "id": "Pokedex-Flutter",
+      "priority": 0,
+      "title": "Pokedex",
+      "descriptions": {
+        "pt": {
+          "concept": "Este projeto é uma Pokédex multiplataforma construída com Flutter e Dart. A proposta é apresentar informações de Pokémon em uma interface que funciona na web e em dispositivos móveis e Windows, usando os dados públicos da PokeAPI.",
+          "implementation": "A aplicação consulta a PokeAPI por HTTP e carrega os Pokémon em lotes de 20 conforme a navegação avança. O estado da tela é coordenado por um controller GetX, enquanto um repositório separado consulta a API e reúne os detalhes de cada Pokémon. O projeto explora carregamento incremental e a separação entre apresentação, coordenação de estado e acesso a dados em uma aplicação Flutter."
+        },
+        "en": {
+          "concept": "This cross-platform Pokédex is built with Flutter and Dart. It presents Pokémon information in an interface intended to run on the web, mobile devices, and Windows, using data from the public PokeAPI service.",
+          "implementation": "The app requests data from PokeAPI over HTTP and loads Pokémon incrementally in batches of 20 as browsing progresses. A GetX controller coordinates screen state, while a separate repository queries the API and retrieves each Pokémon’s details. The project explores incremental loading and the separation of presentation, state coordination, and data access within a Flutter application."
+        }
+      },
+      "technologies": [
+        "Dart",
+        "Flutter",
+        "GetX",
+        "HTTP",
+        "PokeAPI"
+      ],
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Pokedex/main/assets/images/readme-screenshot.png",
+      "links": [
+        {
+          "type": "launch",
+          "url": "https://meifagundes.com/pokedex/"
+        },
+        {
+          "type": "source",
+          "url": "https://github.com/MeiFagundes/Pokedex"
+        }
+      ]
+    },
+    {
+      "id": "Starlight",
+      "priority": 1,
+      "title": "StarlightAI",
+      "descriptions": {
+        "pt": {
+          "concept": "Starlight é uma biblioteca de processamento de linguagem natural em C# e .NET Core, com modelos de classificação de texto treinados por intenção. O projeto oferece conjuntos de dados editáveis para que exemplos e categorias possam ser ajustados ao domínio da aplicação.",
+          "implementation": "A classificação usa ML.NET para transformar texto em características numéricas e treinar um modelo de regressão logística SDCA para cada intenção. Cada solicitação recebe pontuações dos modelos, e a intenção reconhecida direciona a extração de entidades, como datas e horários. O projeto explora a integração entre aprendizado de máquina clássico, conjuntos de dados personalizados e processamento específico de tarefas."
+        },
+        "en": {
+          "concept": "Starlight is a natural language processing library built with C# and .NET Core, with text classification models trained around intents. It provides editable datasets so examples and categories can be adapted to an application's domain.",
+          "implementation": "Classification uses ML.NET to turn text into numerical features and train an SDCA logistic regression model for each intent. Requests receive scores from the models, and the recognized intent directs entity extraction, such as dates and times. The project explores how classical machine learning, custom datasets, and task-specific processing can work together in a language-understanding pipeline."
+        }
+      },
+      "technologies": [
+        "C#",
+        ".NET Core",
+        "ML.NET",
+        "NLP",
+        "Logistic Regression"
+      ],
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Portfolio/master/assets/images/Starlight.jpg",
+      "links": [
+        {
+          "type": "source",
+          "url": "https://github.com/MeiFagundes/StarlightAI"
+        }
+      ]
+    },
+    {
+      "id": "PolarisAI",
+      "priority": 2,
+      "title": "PolarisAI",
+      "descriptions": {
+        "pt": {
+          "concept": "PolarisAI é uma API em C# e .NET Core para processar requisições por meio de intenções e handlers. O projeto combina uma API JSON com persistência em SQL Server e os recursos de processamento de linguagem natural fornecidos pela biblioteca Starlight.",
+          "implementation": "A aplicação usa ASP.NET Core para expor os endpoints JSON, ML.NET no fluxo de classificação e SQL Server para armazenar dados. Os handlers encaminham as intenções reconhecidas para operações específicas e a camada de persistência apoia essas operações. O cliente web disponibilizado pelo projeto permite interagir com a API, apresentando um caminho concreto para experimentar o processamento de requisições."
+        },
+        "en": {
+          "concept": "PolarisAI is a C# and .NET Core API that processes requests through intents and handlers. The project combines a JSON API with SQL Server persistence and the natural language processing capabilities provided by the Starlight library.",
+          "implementation": "ASP.NET Core exposes the JSON endpoints, ML.NET is used in the classification flow, and SQL Server stores data. Handlers route recognized intents to specific operations, supported by a persistence layer. The project's web client provides an interactive way to try the API and follow a request through its intent-based processing flow."
+        }
+      },
+      "technologies": [
+        "C#",
+        ".NET Core",
+        "ASP.NET Core",
+        "ML.NET",
+        "SQL Server",
+        "JSON API"
+      ],
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Portfolio/master/assets/images/PolarisAI.png",
+      "links": [
+        {
+          "type": "launch",
+          "url": "https://meifagundes.com/polaris-ai/"
+        },
+        {
+          "type": "source",
+          "url": "https://github.com/MeiFagundes/PolarisAI"
+        }
+      ]
+    },
+    {
+      "id": "MyQuimicaLab",
+      "priority": 3,
+      "title": "MyQuimicaLab",
+      "descriptions": {
+        "pt": {
+          "concept": "MyQuimicaLab é um projeto de iniciação científica desenvolvido em colaboração com o CEFET-MG. O jogo explora formas lúdicas de apresentar conteúdos de química orgânica, incluindo grupos funcionais, hibridização e nomenclatura, com atividades apoiadas por um conjunto de moléculas.",
+          "implementation": "Feito com JavaScript e Phaser, o jogo combina exploração de um laboratório, coleta de recursos e questões sobre moléculas. HTML5 e CSS compõem a interface, e um conjunto de dados JSON fornece nomes, fórmulas e propriedades usadas nas perguntas. Controllers separados coordenam movimentação, recursos e questões, conectando a experiência de jogo aos temas de química orgânica trabalhados."
+        },
+        "en": {
+          "concept": "MyQuimicaLab is a scientific initiation project developed in collaboration with CEFET-MG. The game explores playful ways to present organic chemistry topics, including functional groups, hybridization, and nomenclature, through activities supported by a molecular dataset.",
+          "implementation": "Built with JavaScript and Phaser, the game combines laboratory exploration, resource collection, and questions about molecules. HTML5 and CSS form the interface, while a JSON dataset supplies names, formulas, and properties used in the questions. Separate controllers coordinate movement, resources, and questions, connecting the gameplay experience to the organic chemistry topics being explored."
+        }
+      },
+      "technologies": [
+        "JavaScript",
+        "Phaser",
+        "HTML5",
+        "CSS",
+        "JSON"
+      ],
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Portfolio/master/assets/images/MyQuimicaLab.jpg",
+      "links": [
+        {
+          "type": "launch",
+          "url": "https://meifagundes.com/my-quimica-lab/"
+        },
+        {
+          "type": "source",
+          "url": "https://github.com/MyQuimicaLab/MyQuimicaLab.github.io"
+        }
+      ]
+    },
+    {
+      "id": "ListDeclutteringTool",
+      "priority": 4,
+      "title": "ListDeclutteringTool",
+      "descriptions": {
+        "pt": {
+          "concept": "ListDeclutteringTool é um aplicativo desktop para Windows voltado à limpeza e organização de listas. A proposta é transformar conteúdo copiado da web ou carregado de arquivos em uma lista mais fácil de reutilizar, com opções para definir separadores e remover valores numéricos ou trechos indesejados.",
+          "implementation": "Escrito em C# com .NET Framework, o programa usa WPF e XAML para apresentar suas opções de transformação. Ele divide o texto por espaços, tabulações, pontos ou um separador personalizado, descarta entradas vazias e pode remover itens reconhecidos como números inteiros. A entrada e a saída funcionam pela área de transferência ou por arquivos de texto, aproximando as operações do fluxo cotidiano de copiar, editar e salvar."
+        },
+        "en": {
+          "concept": "ListDeclutteringTool is a Windows desktop application for cleaning and organizing lists. It turns content copied from the web or loaded from files into a list that is easier to reuse, with options to configure separators and remove numeric entries or unwanted text.",
+          "implementation": "Written in C# with .NET Framework, the program uses WPF and XAML to present its transformation options. It splits text by spaces, tabs, periods, or a custom separator, discards empty entries, and can remove items recognized as integers. Clipboard and text-file input and output connect these operations to an everyday workflow of copying, editing, and saving text."
+        }
+      },
+      "technologies": [
+        "C#",
+        ".NET Framework",
+        "WPF",
+        "XAML",
+        "Windows"
+      ],
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Portfolio/master/assets/images/ListDeclutteringTool.jpg",
+      "links": [
+        {
+          "type": "source",
+          "url": "https://github.com/MeiFagundes/ListDeclutteringTool"
+        }
+      ]
+    },
+    {
+      "id": "Sqrt8086",
+      "priority": 5,
+      "title": "Sqrt8086",
+      "descriptions": {
+        "pt": {
+          "concept": "Sqrt8086 é um experimento em Assembly para Intel 8086 que calcula raízes quadradas e apresenta uma aproximação com casas decimais. O projeto investiga como realizar uma operação numérica desse tipo usando apenas aritmética inteira e as instruções de uma arquitetura de 16 bits.",
+          "implementation": "O algoritmo refina uma estimativa pelo método de Newton, combinando divisões e somas inteiras em sucessivas aproximações. Valores intermediários são escalados para representar uma parte decimal, e a saída separa os componentes inteiro e fracionário. Essa abordagem explora aritmética de ponto fixo e torna explícita a relação entre escala, precisão e limites de representação no processador."
+        },
+        "en": {
+          "concept": "Sqrt8086 is an Intel 8086 Assembly experiment that calculates square roots and displays an approximation with decimal places. It investigates how to perform this numerical operation using only integer arithmetic and the instructions available on a 16-bit architecture.",
+          "implementation": "The algorithm refines an estimate with Newton’s method, combining integer divisions and additions through successive approximations. Intermediate values are scaled to represent a decimal component, and the output separates integer and fractional parts. This approach explores fixed-point arithmetic and makes the relationship between scale, precision, and the processor’s representation limits explicit."
+        }
+      },
+      "technologies": [
+        "Assembly",
+        "Intel 8086",
+        "Fixed-point arithmetic",
+        "Newton’s method"
+      ],
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Portfolio/master/assets/images/Sqrt8086.jpg",
+      "links": [
+        {
+          "type": "source",
+          "url": "https://github.com/MeiFagundes/Sqrt8086"
+        }
+      ]
+    },
+    {
+      "id": "DexDB",
+      "priority": 6,
+      "title": "DexDB",
+      "descriptions": {
+        "pt": {
+          "concept": "DexDB é um protótipo educacional de Pokédex web que reúne uma interface no navegador, um servlet e um banco de dados. O projeto explora a comunicação entre essas partes e foi concebido como prova de conceito, com uma apresentação visual inspirada no Material Design.",
+          "implementation": "O cliente usa JavaScript e Materialize para apresentar cartões de Pokémon e enviar requisições ao servidor. Um Java Servlet recebe essas consultas, usa JDBC para acessar registros no MySQL e devolve os dados ao navegador. O projeto permite estudar, em um exemplo compacto, o fluxo completo entre interface, processamento no servidor e armazenamento relacional, além da montagem dinâmica dos cartões a partir dos registros recebidos."
+        },
+        "en": {
+          "concept": "DexDB is an educational web Pokédex prototype that brings together a browser interface, a servlet, and a database. The project explores communication between these parts and was built as a proof of concept, with a visual presentation inspired by Material Design.",
+          "implementation": "The client uses JavaScript and Materialize to display Pokémon cards and send requests to the server. A Java Servlet handles those queries, uses JDBC to access records in MySQL, and returns data to the browser. The project offers a compact example for studying the complete flow between interface, server-side processing, and relational storage, including the dynamic construction of cards from returned records."
+        }
+      },
+      "technologies": [
+        "Java",
+        "JavaScript",
+        "Java Servlets",
+        "JDBC",
+        "MySQL",
+        "Materialize"
+      ],
+      "imageUrl": "https://raw.githubusercontent.com/MeiFagundes/Portfolio/master/assets/images/DexDB.jpg",
+      "links": [
+        {
+          "type": "source",
+          "url": "https://github.com/MeiFagundes/DexDB"
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,17 @@
 {
   "@@locale": "pt",
+  "languageSelectorLabel": "Idioma",
+  "@languageSelectorLabel": {
+    "description": "Rótulo acessível do seletor de idioma."
+  },
+  "portugueseLanguage": "Português",
+  "@portugueseLanguage": {
+    "description": "Nome do idioma português no seletor."
+  },
+  "englishLanguage": "English",
+  "@englishLanguage": {
+    "description": "Nome do idioma inglês no seletor."
+  },
   "appTitle": "Mei Fagundes",
   "@appTitle": {
     "description": "Nome do portfólio usado como título do aplicativo."

@@ -1,0 +1,85 @@
+{
+  "@@locale": "en",
+  "languageSelectorLabel": "Language",
+  "@languageSelectorLabel": {
+    "description": "Accessible label for the language selector."
+  },
+  "portugueseLanguage": "Português",
+  "@portugueseLanguage": {
+    "description": "Portuguese language name in the selector."
+  },
+  "englishLanguage": "English",
+  "@englishLanguage": {
+    "description": "English language name in the selector."
+  },
+  "appTitle": "Mei Fagundes",
+  "@appTitle": {
+    "description": "Portfolio name used as the app title."
+  },
+  "profileDescription": "I studied at CEFET-MG and am a Software Consultant at Thoughtworks. I enjoy making random little projects to try out different cool technologies. If you are interested, follow me on GitHub or leave a star on one of the listed projects.",
+  "@profileDescription": {
+    "description": "English translation of the personal profile description."
+  },
+  "personalProjects": "Personal Projects",
+  "@personalProjects": {
+    "description": "Title of the personal projects section."
+  },
+  "projectsLoadError": "Could not load the projects.",
+  "@projectsLoadError": {
+    "description": "Message shown when the projects cannot be loaded."
+  },
+  "portfolioLoadError": "Could not load the portfolio.",
+  "@portfolioLoadError": {
+    "description": "Message shown when the portfolio cannot be loaded."
+  },
+  "retry": "Try again",
+  "@retry": {
+    "description": "Action to retry loading the data."
+  },
+  "noProjects": "No projects are available right now.",
+  "@noProjects": {
+    "description": "Message shown when the list has no projects."
+  },
+  "linkOpenError": "Could not open the link.",
+  "@linkOpenError": {
+    "description": "Message shown when a link cannot be opened."
+  },
+  "openProject": "Open",
+  "@openProject": {
+    "description": "Label for the link that opens a project."
+  },
+  "downloadProject": "Download",
+  "@downloadProject": {
+    "description": "Label for the link that downloads a project."
+  },
+  "viewSource": "View on GitHub",
+  "@viewSource": {
+    "description": "Label for the link to view project source code."
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Label for the email contact."
+  },
+  "github": "GitHub",
+  "@github": {
+    "description": "Label for the GitHub profile."
+  },
+  "linkedin": "LinkedIn",
+  "@linkedin": {
+    "description": "Label for the LinkedIn profile."
+  },
+  "builtWith": "Built with ",
+  "@builtWith": {
+    "description": "Text before Flutter in the footer. The final space is intentional."
+  },
+  "appVersion": "v{version}",
+  "@appVersion": {
+    "description": "App version shown in the footer, prefixed by v.",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.7.0"
+      }
+    }
+  }
+}

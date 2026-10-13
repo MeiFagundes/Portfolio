@@ -34,6 +34,50 @@ class DefaultProjectRepository implements ProjectRepository {
   }
 
   ProjectModel _projectFromDocument(Map<String, dynamic> document) {
+    final rawDescriptions = document['descriptions'];
+    if (rawDescriptions is! Map ||
+        rawDescriptions.length != 2 ||
+        !rawDescriptions.containsKey('pt') ||
+        !rawDescriptions.containsKey('en')) {
+      throw const FormatException(
+        'Project field "descriptions" must contain Portuguese and English.',
+      );
+    }
+    final descriptions = <String, ProjectDescription>{};
+    for (final language in const ['pt', 'en']) {
+      final rawDescription = rawDescriptions[language];
+      if (rawDescription is! Map ||
+          rawDescription.length != 2 ||
+          !rawDescription.containsKey('concept') ||
+          !rawDescription.containsKey('implementation')) {
+        throw FormatException(
+          'Project description "$language" must contain concept and implementation.',
+        );
+      }
+      descriptions[language] = ProjectDescription(
+        concept: _requiredString(rawDescription, 'concept'),
+        implementation: _requiredString(rawDescription, 'implementation'),
+      );
+    }
+
+    final rawTechnologies = document['technologies'];
+    if (rawTechnologies is! List) {
+      throw const FormatException(
+        'Project field "technologies" must be a list.',
+      );
+    }
+    final technologies = <String>[];
+    final normalizedTechnologies = <String>{};
+    for (final rawTechnology in rawTechnologies) {
+      final technology = _requiredStringValue(rawTechnology, 'technology');
+      if (!normalizedTechnologies.add(technology.trim().toLowerCase())) {
+        throw FormatException(
+          'Project has duplicate technology "$technology".',
+        );
+      }
+      technologies.add(technology);
+    }
+
     final rawLinks = document['links'];
     if (rawLinks is! List) {
       throw const FormatException('Project field "links" must be a list.');
@@ -61,7 +105,8 @@ class DefaultProjectRepository implements ProjectRepository {
 
     return ProjectModel(
       title: _requiredString(document, 'title'),
-      description: _requiredString(document, 'description'),
+      descriptions: descriptions,
+      technologies: technologies,
       imagePath: imageUrl,
       links: links,
     );
@@ -78,7 +123,10 @@ class DefaultProjectRepository implements ProjectRepository {
   }
 
   String _requiredString(Map document, String field) {
-    final value = document[field];
+    return _requiredStringValue(document[field], field);
+  }
+
+  String _requiredStringValue(Object? value, String field) {
     if (value is! String || value.trim().isEmpty) {
       throw FormatException(
         'Project field "$field" must be a non-empty string.',

@@ -4,6 +4,8 @@ import 'package:meifagundesdotcom/models/project_model.dart';
 import 'package:meifagundesdotcom/ui/core/shared.dart';
 import 'package:meifagundesdotcom/ui/home/widgets/project_link_presentation.dart';
 
+import 'technology_tags.dart';
+
 class ProjectCard extends StatelessWidget {
   final ProjectModel project;
   final Future<bool> Function(String) onOpenLink;
@@ -41,8 +43,7 @@ class ProjectCard extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        title,
-        description,
+        textContent(context),
         const SizedBox(height: 15),
         image,
         const SizedBox(height: 15),
@@ -52,28 +53,40 @@ class ProjectCard extends StatelessWidget {
   }
 
   Widget desktopLayout(BuildContext context) {
-    return Stack(
-      alignment: AlignmentDirectional.bottomStart,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [title, description, const SizedBox(height: 55)],
-              ),
-            ),
-            const SizedBox(width: 15),
-            Container(
-              constraints: const BoxConstraints(maxWidth: 300),
-              child: image,
-            ),
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              textContent(context),
+              const SizedBox(height: 15),
+              links(context),
+            ],
+          ),
         ),
-        links(context),
+        const SizedBox(width: 15),
+        SizedBox(width: 260, child: image),
+      ],
+    );
+  }
+
+  Widget textContent(BuildContext context) {
+    final description = project.descriptionForLanguage(
+      Localizations.localeOf(context).languageCode,
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        title,
+        Text(description.concept, style: TextStyles.projectDescription),
+        const SizedBox(height: 10),
+        Text(description.implementation, style: TextStyles.projectDescription),
+        if (project.technologies.isNotEmpty) ...[
+          const SizedBox(height: 12),
+          TechnologyTags(technologies: project.technologies),
+        ],
       ],
     );
   }
@@ -83,15 +96,9 @@ class ProjectCard extends StatelessWidget {
     child: Text(project.title, style: TextStyles.projectTitle, softWrap: true),
   );
 
-  Widget get description => Text(
-    project.description,
-    style: TextStyles.projectDescription,
-    textAlign: TextAlign.start,
-    softWrap: true,
-  );
-
   Widget links(BuildContext context) => Wrap(
     spacing: 5,
+    runSpacing: 5,
     runAlignment: WrapAlignment.start,
     children: <Widget>[
       for (final link in project.links)

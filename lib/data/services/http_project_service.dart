@@ -32,7 +32,7 @@ class HttpProjectService implements ProjectService {
     if (decoded is! Map<String, dynamic>) {
       throw const FormatException('Project content must be a JSON object.');
     }
-    if (decoded['schemaVersion'] != 1) {
+    if (decoded['schemaVersion'] != 2) {
       throw FormatException(
         'Unsupported project content schema version "${decoded['schemaVersion']}".',
       );

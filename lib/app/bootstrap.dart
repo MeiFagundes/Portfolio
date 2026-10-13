@@ -5,6 +5,7 @@ import '../ui/core/app_theme.dart';
 import 'app.dart';
 import 'bootstrap_view_model.dart';
 import 'dependencies.dart';
+import 'app_locale_view_model.dart';
 
 class PortfolioBootstrap extends StatefulWidget {
   const PortfolioBootstrap({super.key, required this.initialize, this.locale});
@@ -59,6 +60,11 @@ class _PortfolioBootstrapState extends State<PortfolioBootstrap> {
         onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
         theme: buildAppTheme(),
         locale: widget.locale,
+        localeListResolutionCallback: (locales, supportedLocales) => Locale(
+          AppLocaleViewModel.resolveLanguageCode(
+            locales?.map((locale) => locale.languageCode).toList() ?? const [],
+          ),
+        ),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: Builder(

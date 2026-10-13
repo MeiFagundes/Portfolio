@@ -13,6 +13,11 @@ import 'package:meifagundesdotcom/ui/home/widgets/project_link_presentation.dart
 import 'fakes.dart';
 
 void main() {
+  final binding = TestWidgetsFlutterBinding.ensureInitialized();
+  setUp(
+    () => binding.platformDispatcher.localesTestValue = [const Locale('pt')],
+  );
+  tearDown(binding.platformDispatcher.clearLocalesTestValue);
   testWidgets('Initialization failures offer retry and can recover', (
     tester,
   ) async {
@@ -106,7 +111,14 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text(project.title), findsOneWidget);
-    expect(find.text(project.description), findsOneWidget);
+    expect(
+      find.text(project.descriptionForLanguage('pt').concept),
+      findsOneWidget,
+    );
+    expect(
+      find.text(project.descriptionForLanguage('pt').implementation),
+      findsOneWidget,
+    );
     expect(find.text('Ver no GitHub'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
@@ -131,18 +143,17 @@ void main() {
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
     }
-    // Unsupported browser locales fall back to the existing Portuguese catalog.
     await tester.pumpWidget(
       PortfolioApp(dependencies: dependencies, locale: const Locale('en')),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Projetos Pessoais'), findsOneWidget);
+    expect(find.text('Personal Projects'), findsOneWidget);
     expect(repository.calls, 1);
-    final context = tester.element(find.text('Projetos Pessoais'));
-    expect(Localizations.localeOf(context), const Locale('pt'));
+    final context = tester.element(find.text('Personal Projects'));
+    expect(Localizations.localeOf(context), const Locale('en'));
     final strings = AppLocalizations.of(context);
     expect(strings.appVersion(PortfolioContent.version), 'v1.7.0');
-    expect(ProjectLinkType.download.label(strings), 'Baixar');
+    expect(ProjectLinkType.download.label(strings), 'Download');
     expect(ProjectLinkType.unknown.label(strings), isEmpty);
   });
 
@@ -184,4 +195,68 @@ void main() {
     expect(first.calls, 1);
     expect(second.calls, 1);
   });
+
+  testWidgets(
+    'language selector translates loaded projects and persists without refetching',
+    (tester) async {
+      final project = sampleProject();
+      final repository = FakeProjectRepository(() async => [project]);
+      final store = FakeLocalePreferenceStore();
+      final dependencies = fakeDependencies(repository, null, store);
+      await tester.pumpWidget(PortfolioApp(dependencies: dependencies));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(DropdownButton<String>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('English').last);
+      await tester.pumpAndSettle();
+      expect(find.text('Personal Projects'), findsOneWidget);
+      expect(
+        find.text(project.descriptionForLanguage('en').concept),
+        findsOneWidget,
+      );
+      expect(find.text('View on GitHub'), findsOneWidget);
+      expect(store.languageCode, 'en');
+      expect(repository.calls, 1);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'saved preference wins over browser language and injected override wins over preference',
+    (tester) async {
+      final dependencies = fakeDependencies(
+        FakeProjectRepository(() async => []),
+        null,
+        FakeLocalePreferenceStore(),
+        'en',
+      );
+      await tester.pumpWidget(PortfolioApp(dependencies: dependencies));
+      await tester.pumpAndSettle();
+      expect(find.text('Personal Projects'), findsOneWidget);
+      await tester.pumpWidget(
+        PortfolioApp(dependencies: dependencies, locale: const Locale('pt')),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Projetos Pessoais'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'browser preferences use first supported language and unsupported languages fall back to Portuguese',
+    (tester) async {
+      tester.platformDispatcher.localesTestValue = [
+        const Locale('fr'),
+        const Locale('en', 'US'),
+      ];
+      final dependencies = fakeDependencies(
+        FakeProjectRepository(() async => []),
+      );
+      await tester.pumpWidget(PortfolioApp(dependencies: dependencies));
+      await tester.pumpAndSettle();
+      expect(find.text('Personal Projects'), findsOneWidget);
+      tester.platformDispatcher.localesTestValue = [const Locale('fr')];
+      await tester.pumpAndSettle();
+      expect(find.text('Projetos Pessoais'), findsOneWidget);
+    },
+  );
 }

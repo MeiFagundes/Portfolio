@@ -7,17 +7,17 @@ import 'package:http/testing.dart';
 import 'package:meifagundesdotcom/data/services/http_project_service.dart';
 
 void main() {
-  final endpoint = Uri.parse('https://content.example.test/v1/projects.json');
+  final endpoint = Uri.parse('https://content.example.test/v2/projects.json');
 
   group('HttpProjectService', () {
-    test('loads project objects from schema version 1', () async {
+    test('loads project objects from schema version 2', () async {
       final service = HttpProjectService(
         client: MockClient((request) async {
           expect(request.url, endpoint);
           expect(request.headers['accept'], 'application/json');
           return http.Response(
             jsonEncode({
-              'schemaVersion': 1,
+              'schemaVersion': 2,
               'projects': [
                 {'id': 'sample', 'priority': 0},
               ],
@@ -37,7 +37,7 @@ void main() {
       final service = _service(
         endpoint,
         MockClient(
-          (_) async => http.Response('{"schemaVersion":1,"projects":[]}', 200),
+          (_) async => http.Response('{"schemaVersion":2,"projects":[]}', 200),
         ),
       );
 
@@ -46,9 +46,9 @@ void main() {
 
     test('rejects an unsupported schema or malformed envelope', () async {
       for (final body in [
-        '{"schemaVersion":2,"projects":[]}',
-        '{"schemaVersion":1,"projects":{}}',
-        '{"schemaVersion":1,"projects":[null]}',
+        '{"schemaVersion":1,"projects":[]}',
+        '{"schemaVersion":2,"projects":{}}',
+        '{"schemaVersion":2,"projects":[null]}',
         'not json',
       ]) {
         final service = _service(
